@@ -1,0 +1,26 @@
+{
+  "version": "1.0",
+  "menus": [
+    {
+      "id": "main",
+      "title": "示例主菜单",
+      "prompt": "选择: ",
+      "show_logo": true,
+      "options": [
+        { "key": "1", "value": "onekeyroot", "label": "一键Root", "action": "command", "command": "call onekeyroot.bat", "timeout_ms": 120000 },
+        { "key": "2", "value": "openshell", "label": "打开 Shell", "action": "command", "command": "start cmd.exe" },
+        { "key": "3", "value": "about", "label": "关于", "action": "submenu", "target": "about" },
+        { "key": "4", "value": "exit", "label": "退出", "action": "exit" }
+      ]
+    },
+    {
+      "id": "about",
+      "title": "关于",
+      "prompt": "按任意键返回",
+      "show_logo": false,
+      "options": [
+        { "key": "A", "value": "back", "label": "返回", "action": "back" }
+      ]
+    }
+  ]
+}

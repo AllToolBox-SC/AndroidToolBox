@@ -1,0 +1,8 @@
+options:
+  - key: y1
+    value: vy1
+    label: "YAML Label 1"
+  - key: y2
+    value: vy2
+    label: "YAML Label 2"
+  - label: "JustLabelOnly"

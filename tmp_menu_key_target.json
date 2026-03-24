@@ -1,0 +1,16 @@
+{
+  "options": [
+    {
+      "key": "K1",
+      "target": "T1",
+      "label": "Item1",
+      "value": "V1"
+    },
+    {
+      "key": "K2",
+      "target": "T2",
+      "label": "Item2",
+      "value": "V2"
+    }
+  ]
+}

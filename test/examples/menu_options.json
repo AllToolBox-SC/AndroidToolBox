@@ -1,0 +1,7 @@
+{
+  "options": [
+    { "key": "K1", "value": "V1", "label": "Label 1" },
+    { "key": "K2", "value": "V2", "label": "Label 2" },
+    { "key": "K3", "value": "V3", "label": "Label 3" }
+  ]
+}

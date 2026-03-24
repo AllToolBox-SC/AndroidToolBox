@@ -1,0 +1,34 @@
+{
+  "options": [
+    {
+      "key": "1",
+      "value": "onekeyroot",
+      "label": "一键 Root"
+    },
+    {
+      "key": "2",
+      "value": "openshell",
+      "label": "打开 Shell"
+    },
+    {
+      "key": "3",
+      "value": "about",
+      "label": "关于"
+    },
+    {
+      "key": "4",
+      "value": "mods",
+      "label": "扩展管理"
+    },
+    {
+      "key": "5",
+      "value": "help",
+      "label": "帮助与链接"
+    },
+    {
+      "key": "6",
+      "value": "exit",
+      "label": "退出"
+    }
+  ]
+}

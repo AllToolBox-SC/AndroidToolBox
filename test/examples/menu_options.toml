@@ -1,0 +1,12 @@
+[[options]]
+key = "t1"
+value = "tv1"
+label = "TOML Label 1"
+
+[[options]]
+value = "tv2"
+label = "TOML Label 2"
+
+[[options]]
+key = "t3"
+label = "Only Key"

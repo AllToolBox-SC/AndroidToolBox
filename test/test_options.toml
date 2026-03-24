@@ -1,0 +1,7 @@
+[[options]]
+key = "toml1"
+label = "TOML Label 1"
+
+[[options]]
+value = "toml2"
+label = "TOML Label 2"

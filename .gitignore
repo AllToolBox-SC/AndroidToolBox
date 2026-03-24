@@ -44,4 +44,4 @@ bugversion.txt
 tmp*/
 pip*/
 src/build_info.py
-
+bin/

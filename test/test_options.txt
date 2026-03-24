@@ -1,0 +1,2 @@
+val1|Label One
+JustLabel

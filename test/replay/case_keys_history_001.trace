@@ -1,0 +1,9 @@
+# history up/down and snapshot restore
+MODE EMACS
+HISTORY one
+HISTORY two
+TEXT cur
+KEY UP
+KEY UP
+KEY DOWN
+KEY DOWN

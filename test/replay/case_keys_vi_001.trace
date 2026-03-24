@@ -1,0 +1,9 @@
+# vi normal/insert transition and x delete
+MODE VI
+TEXT hello
+KEY ESC
+KEY LEFT
+KEY LEFT
+TEXT x
+TEXT i
+TEXT X

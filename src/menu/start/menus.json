@@ -1,0 +1,140 @@
+{
+  "version": "1.0",
+  "menus": [
+    {
+      "id": "main",
+      "title": "AllToolBox 控制台&主菜单 by xgj_236",
+      "prompt": "选择: ",
+      "show_logo": true,
+      "allow_hotkey_debug": true,
+      "options": [
+        { "key": "1", "label": "一键Root", "action": "submenu", "target": "onekeyroot" },
+        { "key": "2", "label": "在此处打开cmd[含adb环境]", "action": "openshell" },
+        { "key": "3", "label": "关于脚本", "action": "about" },
+        { "key": "4", "label": "扩展管理", "action": "submenu", "target": "mods" },
+        { "key": "5", "label": "常用合集[子菜单]", "action": "submenu", "target": "commonly" },
+        { "key": "6", "label": "链接合集[子菜单]", "action": "submenu", "target": "help-links" },
+        { "key": "7", "label": "应用管理[子菜单]", "action": "submenu", "target": "man-apps" },
+        { "key": "8", "label": "magisk模块管理[子菜单]", "action": "submenu", "target": "magisk-mod" },
+        { "key": "9", "label": "高级菜单[子菜单]", "action": "submenu", "target": "user-debug" },
+        { "key": "10", "label": "退出工具", "action": "exit" }
+      ]
+    },
+    {
+      "id": "onekeyroot",
+      "title": "一键Root菜单",
+      "prompt": "选择: ",
+      "show_logo": true,
+      "options": [
+        { "key": "A", "label": "返回上级菜单", "action": "back" },
+        { "key": "1", "label": "Wear一键Root", "action": "command", "command": "call root.bat", "timeout_ms": 120000 },
+        { "key": "2", "label": "手机通用Root", "action": "command", "command": "call otherroot.bat 3", "timeout_ms": 120000 }
+      ]
+    },
+    {
+      "id": "mods",
+      "title": "扩展管理",
+      "prompt": "选择: ",
+      "show_logo": true,
+      "options": [
+        { "key": "A", "label": "返回上级菜单", "action": "back" },
+        { "key": "1", "label": "运行已安装扩展", "action": "run-mod" },
+        { "key": "2", "label": "安装扩展", "action": "command", "command": "call mod", "timeout_ms": 120000 },
+        { "key": "3", "label": "卸载扩展", "action": "command", "command": "call unmod", "timeout_ms": 120000 }
+      ]
+    },
+    {
+      "id": "commonly",
+      "title": "常用合集",
+      "prompt": "选择: ",
+      "show_logo": true,
+      "options": [
+        { "key": "A", "label": "返回上级菜单", "action": "back" },
+        { "key": "1", "label": "ADB/自检校验码计算", "action": "command", "command": "powershell -ExecutionPolicy Bypass -File zj.ps1", "timeout_ms": 120000 },
+        { "key": "2", "label": "离线OTA升级", "action": "command", "command": "call ota", "timeout_ms": 120000 },
+        { "key": "3", "label": "刷入TWRP", "action": "command", "command": "call pashtwrp", "timeout_ms": 120000 },
+        { "key": "4", "label": "刷入XTC Patch", "action": "command", "command": "call xtcpatch", "timeout_ms": 120000 },
+        { "key": "5", "label": "备份与恢复", "action": "command", "command": "call backup", "timeout_ms": 120000 },
+        { "key": "6", "label": "安卓8.1root后优化", "action": "command", "command": "call rootpro", "timeout_ms": 120000 },
+        { "key": "7", "label": "进入qmmi[9008]", "action": "command", "command": "call qmmi", "timeout_ms": 120000, "pause_after": true },
+        { "key": "8", "label": "scrcpy投屏", "action": "command", "command": "call scrcpy-ui.bat", "timeout_ms": 120000 },
+        { "key": "9", "label": "高级重启", "action": "command", "command": "call rebootpro", "timeout_ms": 120000 },
+        { "key": "10", "label": "刷入AnyKernel3[实验性]", "action": "not-implemented", "requires_debug": true },
+        { "key": "11", "label": "开启无线调试", "action": "command", "command": "call wifiadb", "timeout_ms": 120000 }
+      ]
+    },
+    {
+      "id": "help-links",
+      "title": "帮助与链接",
+      "prompt": "选择: ",
+      "show_logo": true,
+      "options": [
+        { "key": "A", "label": "返回上级菜单", "action": "back" },
+        { "key": "1", "label": "超级恢复文件下载", "action": "command", "command": "start https://www.123865.com/s/Q5JfTd-hEbWH", "timeout_ms": 30000 },
+        { "key": "2", "label": "离线OTA下载", "action": "command", "command": "start https://www.123865.com/s/Q5JfTd-HEbWH", "timeout_ms": 30000 },
+        { "key": "3", "label": "面具模块下载", "action": "command", "command": "start https://www.123684.com/s/Q5JfTd-cEbWH", "timeout_ms": 30000 },
+        { "key": "4", "label": "APK下载", "action": "command", "command": "start https://www.123684.com/s/Q5JfTd-ZEbWH", "timeout_ms": 30000 },
+        { "key": "5", "label": "工具箱官网", "action": "command", "command": "start https://atb.xgj.qzz.io", "timeout_ms": 30000 },
+        { "key": "6", "label": "开发文档", "action": "show-doc" },
+        { "key": "7", "label": "123云盘解除下载限制", "action": "command", "command": "call patch123", "timeout_ms": 120000 }
+      ]
+    },
+    {
+      "id": "man-apps",
+      "title": "应用管理菜单",
+      "prompt": "选择: ",
+      "show_logo": true,
+      "options": [
+        { "key": "A", "label": "返回上级菜单", "action": "back" },
+        { "key": "1", "label": "安装应用", "action": "command", "command": "call userinstapp", "timeout_ms": 120000 },
+        { "key": "2", "label": "卸载应用", "action": "command", "command": "call unapp", "timeout_ms": 120000 },
+        { "key": "3", "label": "安装状态栏悬浮窗", "action": "command", "command": "call xtcztl", "timeout_ms": 120000 },
+        { "key": "4", "label": "设置微信QQ为开机自启应用", "action": "command", "command": "call qqwxautestart", "timeout_ms": 120000 },
+        { "key": "5", "label": "解除z10 V2版本安装限制-V3不适用", "action": "command", "command": "call z10openinst", "timeout_ms": 120000 }
+      ]
+    },
+    {
+      "id": "magisk-mod",
+      "title": "magisk模块管理",
+      "prompt": "选择: ",
+      "show_logo": true,
+      "options": [
+        { "key": "A", "label": "返回上级菜单", "action": "back" },
+        { "key": "1", "label": "刷入Magisk模块", "action": "command", "command": "call userinstmodule", "timeout_ms": 120000 },
+        { "key": "3", "label": "刷入Xposed框架-适用于安卓4.4.4和7.1.1", "action": "command", "command": "call Xposed", "timeout_ms": 120000 }
+      ]
+    },
+    {
+      "id": "user-debug",
+      "title": "Advanced Options",
+      "prompt": "选择: ",
+      "show_logo": true,
+      "options": [
+        { "key": "A", "label": "返回上级菜单", "action": "back" },
+        { "key": "1", "label": "设备信息", "action": "command", "command": "call listbuild", "timeout_ms": 120000 },
+        { "key": "2", "label": "打开充电可用", "action": "command", "command": "call opencharge", "timeout_ms": 120000 },
+        { "key": "3", "label": "型号与innermodel对照表", "action": "command", "command": "call innermodel", "timeout_ms": 120000, "pause_after": true },
+        { "key": "4", "label": "导入本地root文件", "action": "command", "command": "call pashroot", "timeout_ms": 120000 },
+        { "key": "5", "label": "一键root[不刷userdata]", "action": "command", "command": "call root nouserdata", "timeout_ms": 120000 },
+        { "key": "6", "label": "恢复出厂设置[不是超级恢复][Root后禁用]", "action": "command", "command": "call miscre", "timeout_ms": 120000 },
+        { "key": "7", "label": "开机自刷Recovery", "action": "command", "command": "call pashtwrppro", "timeout_ms": 120000 },
+        { "key": "8", "label": "强制加好友[已失效]", "action": "command", "command": "call friend", "timeout_ms": 120000 }
+      ]
+    },
+    {
+      "id": "debug",
+      "title": "DEBUG菜单",
+      "prompt": "选择: ",
+      "show_logo": true,
+      "options": [
+        { "key": "A", "label": "返回上级菜单", "action": "back" },
+        { "key": "1", "label": "色卡", "action": "color-card" },
+        { "key": "2", "label": "调整为未使用状态", "action": "write-whoyou", "target": "1" },
+        { "key": "3", "label": "调整为使用状态", "action": "write-whoyou", "target": "2" },
+        { "key": "4", "label": "调整为更新状态", "action": "write-whoyou", "target": "3" },
+        { "key": "5", "label": "debug sel", "action": "debug-sel" },
+        { "key": "6", "label": "允许使用部分一键root功能", "action": "allow-xtc" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+# vi word motions + delete/change/yank/paste
+MODE VI
+TEXT hello world test
+KEY ESC
+TEXT 0
+TEXT w
+TEXT dw
+TEXT b
+TEXT ce
+TEXT hi
+KEY ESC
+TEXT A
+TEXT !
+KEY ESC
+TEXT yy
+TEXT p

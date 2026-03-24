@@ -1,0 +1,6 @@
+options:
+  - key: yaml1
+    label: YAML Label 1
+  - value: yaml2
+    label: YAML Label 2
+  - JustLabel

@@ -1,0 +1,4 @@
+# tab completion uses first prefix candidate
+MODE EMACS
+TEXT ex
+KEY TAB

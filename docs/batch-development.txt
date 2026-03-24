@@ -1,0 +1,434 @@
+BAT 全套开发教程（从入门到大师）
+
+目录
+- 概述
+- 最小模板
+- 基础知识
+- 常见陷阱与防范
+- 调试与日志
+- 提权与 UAC
+- 参数解析与选项
+- 与 PowerShell / 外部工具协作
+- ANSI、颜色与 Unicode
+- 错误处理与健壮性
+- 测试、CI 与质量控制
+- 打包与发布
+- 安全最佳实践
+- 高级技巧（到“无上”）
+- 示例片段
+- 工具清单
+- 模板与片段库
+- 结论与下一步
+
+1. 概述
+本指南面向 Windows 下批处理脚本（.bat/.cmd）开发者，覆盖从基础语法到高级实战、测试与发布流程。目标是让你能编写可靠、可维护、安全且可自动化的批处理工具。
+
+2. 最小模板
+建议的脚本骨架（可保存为 templates/batch-std.bat）：
+
+@echo off
+setlocal EnableExtensions EnableDelayedExpansion
+rem ---- config ----
+set "APPNAME=MyBatch"
+set "LOGFILE=%~dp0%APPNAME%.log"
+rem ---- entry ----
+call :main %*
+exit /b %ERRORLEVEL%
+
+:main
+rem your code here
+goto :eof
+
+说明：
+- 使用 setlocal 管理环境，避免污染调用者环境。
+- 用 %~dp0 取得脚本目录，便于定位同目录资源。
+
+3. 基础知识
+- 变量与延迟扩展：常规变量用 %VAR%，在 for/块内读写需启用延迟扩展并使用 !VAR!。
+- for 循环：脚本中 for 要用双 %，例如 for /f "tokens=1,2 delims=," %%A in (file.csv) do (
+- 条件判断：if "%~1"=="" goto :usage；if errorlevel 1 echo failed（注意 errorlevel 语义为 >=）。
+- 子例程：call :label arg1 arg2；子例程结尾用 exit /b 返回。
+- 退出码：通过 exit /b <code> 返回，调用者读取 %ERRORLEVEL%。
+
+4. 常见陷阱与防范
+- 空格与引号：使用 set "VAR=value" 以避免尾随空格；在路径上总是用 "%~f0" 或 "%~dp0file"。
+- 延迟扩展陷阱：在 for 块中实时读取变量须使用 !var!；注意当数据包含 ! 时需要转义。
+- 百分号问题：在命令行测试用 %A，脚本中写 %%A。
+- 文件编码：旧版 cmd 对 UTF-8 BOM 支持不好，建议保存为 ANSI 或 UTF-8 无 BOM，必要时用 chcp 65001 切换编码并用 PowerShell 处理复杂文本。
+
+5. 调试与日志
+- 简单调试：运行前临时打开 echo on 或插入 echo 语句。
+- 统一日志函数：建立 :log 子例程同时输出到控制台和日志文件。
+
+:log
+set "msg=%~1"
+>>"%LOGFILE%" echo [%DATE% %TIME%] %msg%
+echo %msg%
+goto :eof
+
+- 断点：使用 pause，或在交互调试时用 cmd /k 暂停并保留窗口。
+- 使用 Sysinternals 的 Procmon/Process Explorer 帮助定位系统调用问题。
+
+6. 提权与 UAC
+- 检测管理员并自提升的常见模式：
+
+net session >nul 2>&1
+if %ERRORLEVEL% NEQ 0 (
+  powershell -NoProfile -Command "Start-Process -FilePath '%~f0' -ArgumentList '%*' -Verb RunAs"
+  exit /b
+)
+
+- 原则：仅在必要的子操作提权，避免整个流程长时间以管理员权限运行。
+
+7. 参数解析与选项
+- 简易解析框架：
+
+:parse_args
+if "%~1"=="" goto :usage
+:loop
+if "%~1"=="" goto :done
+if /i "%~1"=="-h" goto :usage
+if /i "%~1"=="-o" ( set "OUT=%~2" & shift & shift & goto :loop )
+shift
+goto :loop
+
+- 当参数复杂时，推荐将复杂解析委托给 PowerShell 子命令或使用小型参数解析库（自制）。
+
+8. 与 PowerShell / 外部工具协作
+- 批处理适合作为流程与任务编排，复杂文本处理、JSON 解析和 HTTP 建议交给 PowerShell。
+- 示例：用 PowerShell 下载文件：
+
+powershell -NoProfile -Command "Invoke-WebRequest -Uri 'https://example.com/file' -OutFile 'file.tmp'"
+
+- 对于高性能或并发任务，考虑用 Go/C#/Python 重写核心逻辑，batch 仅保留入口层。
+
+9. ANSI、颜色与 Unicode
+- Windows 10+ 支持 VT 序列，但需在某些终端或旧系统上启用。简单的彩色输出直接调用 PowerShell 的 Write-Host 更可靠：
+
+powershell -NoProfile -Command "Write-Host 'OK' -ForegroundColor Green"
+
+10. 错误处理与健壮性
+- 链式命令：somecommand.exe && echo success || (echo fail & exit /b 1)
+- 幂等：脚本应可重复运行，先检查状态再执行修改操作。
+- 事务与回滚：对关键文件先做备份，失败时恢复。
+
+11. 测试、CI 与质量控制
+- 在本地与 CI 中都要运行：保证在 windows-latest、不同权限和不同路径下测试。
+- GitHub Actions 示例：
+
+name: Test bat
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run script
+        run: cmd /c "scripts\myscript.bat arg1"
+
+- 测试要断言退出码和关键输出，并保存日志 artifacts。
+
+12. 打包与发布
+- 简单打包：用 7‑Zip 生成 7z，再用 SFX 或 IExpress/NSIS 生成自解压安装器。
+- 签名：对对外发布的 exe/安装器使用 signtool 签名；CI 中自动化签名流程。
+
+13. 安全最佳实践
+- 不在脚本中保存明文凭据，使用凭证管理或外部密钥服务。
+- 验证所有外部输入，尤其是下载的内容和用户输入。
+- 用最小权限执行，仅在必要时提权。
+
+14. 高级技巧（到“无上”）
+- 模块化：把通用工具函数放入 lib\common.bat，通过 call 引入。
+- 自更新：脚本下载新版本到临时目录，校验哈希后替换自身（先保存备份）。
+- 并行：用 start /b 启动多个子任务，或借助 PowerShell Job 管理并发。
+- 可观测性：结构化日志、时间戳、主机标识，并把日志上传到集中式服务。
+
+15. 示例片段（精选）
+- usage & 参数：
+
+:usage
+echo Usage: %~nx0 [-o out] input
+exit /b 1
+
+- 简易下载并校验：
+
+powershell -NoProfile -Command "Invoke-WebRequest 'https://example.com/file' -OutFile 'file.tmp'"
+certutil -hashfile file.tmp SHA256 > hash.txt
+
+- 子例程模式：
+
+call :do_work arg1 arg2
+if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
+goto :eof
+
+:do_work
+rem ...
+exit /b 0
+
+16. 工具清单（推荐）
+- 编辑器：VSCode + Batch 插件 / Notepad++
+- 打包：7‑Zip、IExpress、NSIS
+- 调试：Sysinternals（Procmon、ProcExp）
+- 签名：signtool（Windows SDK）
+- CI：GitHub Actions（windows-latest）、Azure Pipelines
+
+17. 模板与片段库
+- 建议在仓库中维护 scripts/templates/batch-std.bat、templates/logging.bat、templates/argparse.bat。
+
+18. 结论与下一步
+- 路线：掌握基础语法 → 建立模板与测试 → 学会与 PowerShell/外部工具协作 → 自动化打包与签名。
+- 我可以：
+  - 把本文件提交到当前分支（请确认目标分支），
+  - 或者在仓库中生成模板和 CI workflow 示例。
+
+附注：若需我把示例脚本、CI workflow、以及模板全部生成并提交，请回复要创建的分支名。
+
+19. 发布前检查表（Release checklist）
+- 确认脚本在 `windows-latest`、本地低权限与管理员三种场景下测试通过。
+- 确认所有外部依赖（7z、signtool、powershell 等）在目标系统可用或已提供降级方案。
+- 移除或替换脚本中所有明文凭据；将凭据放入安全存储或凭证管理器。
+- 为所有关键步骤添加日志与错误码处理，确保非零退出码可被 CI 捕获。
+- 若发布为可执行安装器：生成签名（`signtool`）、校验哈希并在 Release 页面附上校验值。
+- 更新 README、CHANGELOG，并在发布说明中列出回退步骤与已知限制。
+
+20. 推荐的 `lib\common.bat`（片段）
+说明：把常见工具函数集中到 `lib\common.bat`，其他脚本通过 `call lib\common.bat` 引入。
+
+:: lib\common.bat
+@echo off
+setlocal EnableExtensions EnableDelayedExpansion
+
+:: 日志函数：同时写控制台和日志文件
+:log
+set "_log_msg=%~1"
+if defined LOGFILE (
+  >>"%LOGFILE%" echo [%DATE% %TIME%] %_log_msg%
+)
+echo %_log_msg%
+exit /b 0
+
+:: 下载并重试（简单版，依赖 powershell）
+:download_with_retry
+set "_url=%~1"
+set "_out=%~2"
+set "_retries=%~3"
+if "%_retries%"=="" set "_retries=3"
+set /a _i=0
+:dl_loop
+set /a _i+=1
+powershell -NoProfile -Command "try{ (New-Object Net.WebClient).DownloadFile('%_url%','%_out%'); exit 0 } catch { exit 1 }"
+if %ERRORLEVEL%==0 exit /b 0
+if %_i% lss %_retries% (
+  timeout /t 2 >nul
+  goto dl_loop
+)
+exit /b 1
+
+:: 简易互斥锁（防止并发运行）
+:acquire_lock
+set "_lockdir=%TEMP%\%~n0.lock"
+if exist "%_lockdir%" (
+  echo Another instance is running.
+  exit /b 1
+)
+mkdir "%_lockdir%" 2>nul
+if errorlevel 1 (
+  echo Failed to create lock directory.
+  exit /b 1
+)
+exit /b 0
+
+:release_lock
+set "_lockdir=%TEMP%\%~n0.lock"
+rmdir "%_lockdir%" 2>nul
+exit /b 0
+
+21. 自更新（safe self-update）模式
+- 步骤：下载新版本到临时文件→校验哈希→在临时位置解压或替换→原子替换（move/rename）→重启新脚本。
+- 例：
+
+set "TMPFILE=%TEMP%\%~n0.new"
+call :download_with_retry "https://example.com/myscript.bat" "%TMPFILE%" 3
+if errorlevel 1 (
+  echo Download failed & exit /b 1
+)
+certutil -hashfile "%TMPFILE%" SHA256 > "%TMPFILE%.hash"
+rem compare hash
+move /Y "%TMPFILE%" "%~f0"
+
+注意：替换自身时要先写入临时文件再 move，避免写入中断导致损坏。
+
+22. 打包示例（7z + SFX）
+- 生成 7z：
+
+7z a -r release\package.7z scripts\* libs\*
+
+- 生成 SFX（示例，需 7z.sfx 模板）：
+
+copy /b 7z.sfx + config.txt + release\package.7z release\installer.exe
+
+23. 更完善的 CI 示例（GitHub Actions）
+- 一个基本但较完整的 workflow：
+
+name: bat-ci
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup
+        run: |
+          chcp 65001
+      - name: Run tests
+        run: cmd /c "scripts\test-suite.bat"
+      - name: Upload logs
+        uses: actions/upload-artifact@v4
+        with:
+          name: bat-logs
+          path: logs/**
+
+24. 发布前自动化检查建议（CI hook）
+- 退出码检查：所有脚本必须在失败时返回非零退出码。CI 应把非零视为失败。 
+- 静态检查：检查脚本中是否包含硬编码密码、HTTP 明文 URL、危险的 delete/format 命令等关键字（实现简单 grep）。
+
+25. 常用速查表（Command Snippets）
+- 取脚本路径：`%~dp0`
+- 脚本名：`%~nx0`
+- 引用参数：`%1` `%2`，循环脚本内使用 `%%A`。
+- 延迟扩展启用：`setlocal EnableDelayedExpansion` + 使用 `!var!`。
+- 退出：`exit /b <code>`。
+
+26. 常见问答（FAQ）
+- Q: 脚本如何处理路径中有空格？
+  A: 使用双引号包裹所有路径：`"%~dp0my file.txt"`；用 `set "VAR=value"` 来避免尾随空格。
+- Q: 如何在不提升权限时测试需要管理员的功能？
+  A: 在 VM 中用管理员帐号测试，或在脚本中实现 dry-run 模式（通过 `--dry-run` 跳过风险操作）。
+
+27. 发布检查清单（简短版）
+- 单元/集成测试通过
+- 无明文凭据
+- 生成签名与校验值
+- README/CHANGELOG 更新
+
+结尾：
+我已将详细扩展追加到本文件。如果你要我同时生成 `lib\common.bat`、示例脚本或 CI workflow 文件到 `scripts/` 目录（只在本地创建，不会推送），回复“生成示例”。
+ 
+28. 推荐的项目目录结构
+- docs/                # 文档
+- scripts/             # 可执行脚本（按功能分子目录）
+  - templates/         # 模板脚本（batch-std.bat、logging.bat）
+  - lib/               # 公共函数库（lib\common.bat）
+  - examples/          # 使用示例
+  - tests/             # 测试脚本与测试数据
+- ci/                  # CI 辅助脚本
+
+29. 可靠性与清理模式
+- 约定：在脚本入口定义全局变量 `EXIT_CODE=0`，遇到错误时设定并跳转到 `:cleanup`，在 `:cleanup` 中统一释放锁、删除临时文件、上报日志并 `exit /b %EXIT_CODE%`。
+
+示例：
+
+setlocal EnableDelayedExpansion
+set "EXIT_CODE=0"
+call :acquire_lock || (set EXIT_CODE=1 & goto cleanup)
+
+call :main %*
+set EXIT_CODE=%ERRORLEVEL%
+
+goto cleanup
+
+:cleanup
+call :release_lock
+rem 删除临时文件
+if exist "%TEMP%\%~n0.*" del "%TEMP%\%~n0.*" >nul 2>&1
+exit /b %EXIT_CODE%
+
+30. 并发与等待（实用范式）
+- 用 `start /b` 启动子任务，并让子任务在完成时写入完成标志文件，父进程轮询这些标志文件实现等待与超时控制。
+
+示例：并行启动两个任务并等待完成：
+
+start "task1" /b cmd /c "call scripts\task1.bat > logs\task1.log 2>&1 & echo DONE>""%TEMP%\task1.done"""
+start "task2" /b cmd /c "call scripts\task2.bat > logs\task2.log 2>&1 & echo DONE>""%TEMP%\task2.done"""
+
+:wait_tasks
+set /a waited=0
+set /a timeout=300
+:wait_loop
+if exist "%TEMP%\task1.done" if exist "%TEMP%\task2.done" goto tasks_done
+timeout /t 1 >nul
+set /a waited+=1
+if %waited% GEQ %timeout% (
+  echo Timeout waiting for tasks
+  set EXIT_CODE=2
+  goto cleanup
+)
+goto wait_loop
+
+:tasks_done
+del "%TEMP%\task1.done" "%TEMP%\task2.done" >nul 2>&1
+
+31. 与 Windows 服务或计划任务交互
+- 使用 `sc` 创建/删除服务，使用 `schtasks` 创建计划任务。示例：
+
+schtasks /Create /SC DAILY /TN "MyDaily" /TR "%~f0" /ST 03:00
+
+32. 将命令输出捕获到变量
+- 模式：在脚本中使用 `for /f` 捕获命令输出，脚本内使用 `%%`：
+
+for /f "usebackq delims=" %%A in (`powershell -NoProfile -Command "Write-Output 'hello'"`) do set "OUT=%%A"
+echo Output is: %OUT%
+
+33. 处理子进程与退出码
+- 子进程错误应被捕获并转换为主流程的非零退出码。示例：
+
+call :run_step "do something"
+if %ERRORLEVEL% NEQ 0 (echo step failed & set EXIT_CODE=1 & goto cleanup)
+
+34. 国际化与编码策略
+- 建议：
+  - 文本文件保存为 UTF-8 无 BOM 或 ANSI（兼容旧 cmd）。
+  - 在脚本需要处理 Unicode 时，使用 PowerShell 处理文本内容并返回必要结果给 batch。
+  - 在 CI 中显式设置 `chcp 65001` 以统一环境。
+
+35. 秘密与凭证管理（不在脚本中明文）
+- 推荐使用 Windows Credential Manager 或 Azure Key Vault 等服务。示例：用 PowerShell 从 Credential Manager 读取：
+
+powershell -NoProfile -Command "(Get-StoredCredential -Target 'my/secret').Password"
+
+36. 进阶调试技巧
+- 使用 Procmon 捕获文件/注册表/网络访问的低级事件。用 `dumpbin` 或 `signtool` 检查签名问题。对长期挂起问题可使用 Process Explorer 查看句柄与线程信息。
+
+37. 详细示例（可拷贝到 scripts/examples/）
+- Robust download + hash 校验（伪代码）
+
+@echo off
+set "URL=https://example.com/file.zip"
+set "OUT=%TEMP%\file.zip"
+call :download_with_retry "%URL%" "%OUT%" 5 || (echo download failed & exit /b 1)
+certutil -hashfile "%OUT%" SHA256 > "%OUT%.hash"
+rem 验证 hash（示例略）
+
+- 参数解析（支持短/长选项示例，脚本内使用 %%）
+
+:parse_args
+set "MODE=run"
+:arg_loop
+if "%~1"=="" goto arg_done
+if /i "%~1"=="--help" (call :usage & exit /b 0)
+if /i "%~1"=="-o" (set "OUT=%~2" & shift & shift & goto arg_loop)
+shift
+goto arg_loop
+:arg_done
+
+38. 参考书目与资源
+- Microsoft docs: Batch file reference
+- Sysinternals Suite docs
+- PowerShell documentation for complementary tasks
+
+39. 我可以为你做的后续工作（选项）
+- 本地生成并放置示例脚本到 `scripts/examples/`（不会推送远端）。
+- 生成 `lib\common.bat` 到 `scripts/lib/` 并示例化 `scripts/templates/*`。
+- 生成一个 GitHub Actions workflow 到 `.github/workflows/bat-ci.yml`（本地文件）。
+
+回复 “生成示例” 并指明你想生成的项（例如：`examples, lib, ci`），我会在仓库中创建对应文件。
