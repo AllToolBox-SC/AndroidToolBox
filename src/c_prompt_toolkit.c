@@ -29,12 +29,14 @@ static WORD g_default_console_attr = (FOREGROUND_RED | FOREGROUND_GREEN | FOREGR
 /* Additional ANSI colors used by the menu renderer */
 #define ANSI_BLUE "\x1b[38;2;138;180;248m"
 #define ANSI_GREEN "\x1b[38;2;122;209;168m"
+#define CPTK_MULTI_CHECK_MARK "✓"
+#define CPTK_MULTI_CONFIRM_LABEL "确定"
 
 /* forward decl for single-choice renderer used below */
 static void cptk_menu_render_single_helper(HANDLE out_handle, int start_row, const char *const *items, size_t item_count, size_t focused, const char *digit_buf);
 /* forward decls for row-update helpers (defined later) */
 static void cptk_menu_update_single_row(HANDLE out_handle, int start_row, const char *const *items, size_t item_count, size_t idx, int is_focused);
-static void cptk_menu_update_multi_item(HANDLE out_handle, int start_row, int width, int avail, const char *const *items, size_t item_count, const unsigned char *sel_mask, int idx, int focused, const short *opt_row_start, const short *opt_row_end);
+static void cptk_menu_update_multi_item(HANDLE out_handle, int start_row, int width, int avail, const char *const *items, size_t item_count, const unsigned char *sel_mask, int idx, int focused, const short *opt_row_start, const short *opt_row_end, int include_confirm);
 
 /* Debug logging helper: when ATB_MENU_DEBUG is set (non-zero), write
  * formatted messages to stderr and append to file ATB_MENU_DEBUG_FILE
@@ -1281,16 +1283,18 @@ static size_t cptk_menu_render_multi_helper(
     const unsigned char *sel_mask,
     int focused,
     short *opt_row_start,
-    short *opt_row_end
+    short *opt_row_end,
+    int include_confirm
 ) {
     CONSOLE_SCREEN_BUFFER_INFO csbi;
     DWORD written = 0;
     COORD pos;
     size_t total_rows = 0;
+    size_t render_count = item_count + (include_confirm ? 1u : 0u);
 
     /* First compute mapping (how many wrapped lines each item needs) */
-    for (size_t i = 0; i < item_count; ++i) {
-        const char *lbl = items[i] ? items[i] : "";
+    for (size_t i = 0; i < render_count; ++i) {
+        const char *lbl = (i < item_count) ? (items[i] ? items[i] : "") : CPTK_MULTI_CONFIRM_LABEL;
         size_t len = strlen(lbl);
         size_t p = 0;
         int lines = 0;
@@ -1336,21 +1340,38 @@ static size_t cptk_menu_render_multi_helper(
     }
 
     /* Print items with wrapping and update mapping (opt_row_start/opt_row_end already relative) */
-    for (size_t idx = 0; idx < item_count; ++idx) {
-        const char *lbl = items[idx] ? items[idx] : "";
+    for (size_t idx = 0; idx < render_count; ++idx) {
+        const char *lbl = (idx < item_count) ? (items[idx] ? items[idx] : "") : CPTK_MULTI_CONFIRM_LABEL;
         size_t len = strlen(lbl);
         size_t p = 0;
+        int is_confirm = (idx >= item_count) ? 1 : 0;
         int is_focused = (int)idx == focused;
-        char sel_ch = sel_mask && sel_mask[idx] ? 'x' : ' ';
+        int is_checked = (idx < item_count && sel_mask && sel_mask[idx]) ? 1 : 0;
+        const char *sel_mark = (idx < item_count && sel_mask && sel_mask[idx]) ? CPTK_MULTI_CHECK_MARK : " ";
 
         while (p < len) {
             size_t can = (size_t)avail;
             if (len - p <= can) {
-                if (is_focused) {
-                    /* Highlight focused line without pointer */
-                    printf("[%c] %u. %.*s\n", sel_ch, (unsigned)(idx + 1), (int)(len - p), lbl + p);
+                if (is_confirm) {
+                    if (is_focused) {
+                        printf("%s%s%s%.*s%s\n", ANSI_WHITE, ANSI_BOLD, ANSI_UNDERLINE, (int)(len - p), lbl + p, ANSI_RESET);
+                    } else {
+                        printf("%.*s\n", (int)(len - p), lbl + p);
+                    }
                 } else {
-                    printf("  [%c] %u. %.*s\n", sel_ch, (unsigned)(idx + 1), (int)(len - p), lbl + p);
+                    if (is_focused) {
+                        if (is_checked) {
+                            printf("%s%s%s[%s]%u.%.*s%s\n", ANSI_GREEN, ANSI_BOLD, ANSI_UNDERLINE, sel_mark, (unsigned)(idx + 1), (int)(len - p), lbl + p, ANSI_RESET);
+                        } else {
+                            printf("%s%s%s[%s]%u.%.*s%s\n", ANSI_WHITE, ANSI_BOLD, ANSI_UNDERLINE, sel_mark, (unsigned)(idx + 1), (int)(len - p), lbl + p, ANSI_RESET);
+                        }
+                    } else {
+                        if (is_checked) {
+                            printf("%s%s[%s]%u.%.*s%s\n", ANSI_GREEN, ANSI_BOLD, sel_mark, (unsigned)(idx + 1), (int)(len - p), lbl + p, ANSI_RESET);
+                        } else {
+                            printf("[%s]%u.%.*s\n", sel_mark, (unsigned)(idx + 1), (int)(len - p), lbl + p);
+                        }
+                    }
                 }
                 p = len;
                 break;
@@ -1360,10 +1381,26 @@ static size_t cptk_menu_render_multi_helper(
                 if (lbl[p + j - 1] == ' ') break;
             }
             if (j == 0) j = can;
-            if (is_focused) {
-                printf("[%c] %u. %.*s\n", sel_ch, (unsigned)(idx + 1), (int)j, lbl + p);
+            if (is_confirm) {
+                if (is_focused) {
+                    printf("%s%s%s%.*s%s\n", ANSI_WHITE, ANSI_BOLD, ANSI_UNDERLINE, (int)j, lbl + p, ANSI_RESET);
+                } else {
+                    printf("%.*s\n", (int)j, lbl + p);
+                }
             } else {
-                printf("  [%c] %u. %.*s\n", sel_ch, (unsigned)(idx + 1), (int)j, lbl + p);
+                if (is_focused) {
+                    if (is_checked) {
+                        printf("%s%s%s[%s]%u.%.*s%s\n", ANSI_GREEN, ANSI_BOLD, ANSI_UNDERLINE, sel_mark, (unsigned)(idx + 1), (int)j, lbl + p, ANSI_RESET);
+                    } else {
+                        printf("%s%s%s[%s]%u.%.*s%s\n", ANSI_WHITE, ANSI_BOLD, ANSI_UNDERLINE, sel_mark, (unsigned)(idx + 1), (int)j, lbl + p, ANSI_RESET);
+                    }
+                } else {
+                    if (is_checked) {
+                        printf("%s%s[%s]%u.%.*s%s\n", ANSI_GREEN, ANSI_BOLD, sel_mark, (unsigned)(idx + 1), (int)j, lbl + p, ANSI_RESET);
+                    } else {
+                        printf("[%s]%u.%.*s\n", sel_mark, (unsigned)(idx + 1), (int)j, lbl + p);
+                    }
+                }
             }
             p += j;
             while (p < len && lbl[p] == ' ') p++;
@@ -1533,14 +1570,18 @@ static void cptk_menu_update_multi_item(
     int idx,
     int focused,
     const short *opt_row_start,
-    const short *opt_row_end
+    const short *opt_row_end,
+    int include_confirm
 ) {
-    if (!items || idx < 0 || (size_t)idx >= item_count) return;
-    const char *lbl = items[idx] ? items[idx] : "";
+    size_t render_count = item_count + (include_confirm ? 1u : 0u);
+    if (!items || idx < 0 || (size_t)idx >= render_count) return;
+    const char *lbl = ((size_t)idx < item_count) ? (items[idx] ? items[idx] : "") : CPTK_MULTI_CONFIRM_LABEL;
     size_t len = strlen(lbl);
     size_t p = 0;
     int is_focused = (focused == idx);
-    char sel_ch = sel_mask && sel_mask[idx] ? 'x' : ' ';
+    int is_confirm = ((size_t)idx >= item_count) ? 1 : 0;
+    int is_checked = ((size_t)idx < item_count && sel_mask && sel_mask[idx]) ? 1 : 0;
+    const char *sel_mark = ((size_t)idx < item_count && sel_mask && sel_mask[idx]) ? CPTK_MULTI_CHECK_MARK : " ";
     COORD pos;
     DWORD written = 0;
 
@@ -1581,17 +1622,49 @@ static void cptk_menu_update_multi_item(
         }
 
         if (p + take >= len) {
-            if (is_focused) {
-                printf("[%c] %u. %.*s\n", sel_ch, (unsigned)(idx + 1), (int)take, lbl + p);
+            if (is_confirm) {
+                if (is_focused) {
+                    printf("%s%s%s%.*s%s\n", ANSI_WHITE, ANSI_BOLD, ANSI_UNDERLINE, (int)take, lbl + p, ANSI_RESET);
+                } else {
+                    printf("%.*s\n", (int)take, lbl + p);
+                }
             } else {
-                printf("  [%c] %u. %.*s\n", sel_ch, (unsigned)(idx + 1), (int)take, lbl + p);
+                if (is_focused) {
+                    if (is_checked) {
+                        printf("%s%s%s[%s]%u.%.*s%s\n", ANSI_GREEN, ANSI_BOLD, ANSI_UNDERLINE, sel_mark, (unsigned)(idx + 1), (int)take, lbl + p, ANSI_RESET);
+                    } else {
+                        printf("%s%s%s[%s]%u.%.*s%s\n", ANSI_WHITE, ANSI_BOLD, ANSI_UNDERLINE, sel_mark, (unsigned)(idx + 1), (int)take, lbl + p, ANSI_RESET);
+                    }
+                } else {
+                    if (is_checked) {
+                        printf("%s%s[%s]%u.%.*s%s\n", ANSI_GREEN, ANSI_BOLD, sel_mark, (unsigned)(idx + 1), (int)take, lbl + p, ANSI_RESET);
+                    } else {
+                        printf("[%s]%u.%.*s\n", sel_mark, (unsigned)(idx + 1), (int)take, lbl + p);
+                    }
+                }
             }
             p = len;
         } else {
-            if (is_focused) {
-                printf("[%c] %u. %.*s\n", sel_ch, (unsigned)(idx + 1), (int)take, lbl + p);
+            if (is_confirm) {
+                if (is_focused) {
+                    printf("%s%s%s%.*s%s\n", ANSI_WHITE, ANSI_BOLD, ANSI_UNDERLINE, (int)take, lbl + p, ANSI_RESET);
+                } else {
+                    printf("%.*s\n", (int)take, lbl + p);
+                }
             } else {
-                printf("  [%c] %u. %.*s\n", sel_ch, (unsigned)(idx + 1), (int)take, lbl + p);
+                if (is_focused) {
+                    if (is_checked) {
+                        printf("%s%s%s[%s]%u.%.*s%s\n", ANSI_GREEN, ANSI_BOLD, ANSI_UNDERLINE, sel_mark, (unsigned)(idx + 1), (int)take, lbl + p, ANSI_RESET);
+                    } else {
+                        printf("%s%s%s[%s]%u.%.*s%s\n", ANSI_WHITE, ANSI_BOLD, ANSI_UNDERLINE, sel_mark, (unsigned)(idx + 1), (int)take, lbl + p, ANSI_RESET);
+                    }
+                } else {
+                    if (is_checked) {
+                        printf("%s%s[%s]%u.%.*s%s\n", ANSI_GREEN, ANSI_BOLD, sel_mark, (unsigned)(idx + 1), (int)take, lbl + p, ANSI_RESET);
+                    } else {
+                        printf("[%s]%u.%.*s\n", sel_mark, (unsigned)(idx + 1), (int)take, lbl + p);
+                    }
+                }
             }
             p += take;
             while (p < len && lbl[p] == ' ') p++;
@@ -1659,16 +1732,18 @@ cptk_status cptk_menu_multi_choice_interactive(
 
     if (width <= 10) width = 80;
 
+    size_t render_count = item_count + 1; /* add one extra "确定" item */
+
     /* compute digit width for numbering */
     int digits = 1;
-    for (i = 10; i <= item_count; i *= 10) digits++;
-    int prefix_len = 6 + digits; /* e.g. " > [x] N. " approx */
+    for (i = 10; i <= render_count; i *= 10) digits++;
+    int prefix_len = 5 + digits; /* e.g. "[✓]10." */
     int avail = width - prefix_len;
     if (avail < 8) avail = width - 10 > 8 ? width - 10 : 8;
 
     /* allocate rows mapping */
-    short *opt_row_start = (short *)malloc(sizeof(short) * item_count);
-    short *opt_row_end = (short *)malloc(sizeof(short) * item_count);
+    short *opt_row_start = (short *)malloc(sizeof(short) * render_count);
+    short *opt_row_end = (short *)malloc(sizeof(short) * render_count);
     if (!opt_row_start || !opt_row_end) {
         if (opt_row_start) free(opt_row_start);
         if (opt_row_end) free(opt_row_end);
@@ -1677,7 +1752,7 @@ cptk_status cptk_menu_multi_choice_interactive(
     }
 
     /* Use helper to compute mapping and render initial menu. */
-    size_t total_rows = cptk_menu_render_multi_helper(out_handle, start_row, width, avail, items, item_count, out_selected_mask, 0, opt_row_start, opt_row_end);
+    size_t total_rows = cptk_menu_render_multi_helper(out_handle, start_row, width, avail, items, item_count, out_selected_mask, 0, opt_row_start, opt_row_end, 1);
     if (max_height > 0 && (int)total_rows > max_height) {
         total_rows = (size_t)max_height;
     }
@@ -1686,11 +1761,8 @@ cptk_status cptk_menu_multi_choice_interactive(
     for (i = 0; i < item_count; ++i) out_selected_mask[i] = 0;
 
     int focused = 0;
-    menu_mouse_click_state click_state;
-    unsigned int double_click_ms = menu_get_double_click_threshold_ms();
+    int confirm_index = (int)item_count;
     unsigned long last_motion_tick = 0;
-
-    menu_mouse_click_state_reset(&click_state);
 
     /* initial animation */
     if (animate_in) {
@@ -1720,8 +1792,8 @@ cptk_status cptk_menu_multi_choice_interactive(
             int click_row = mouse_ev.y;
             int target = -1;
 
-            /* Map row to option index */
-            for (size_t idx = 0; idx < item_count; ++idx) {
+            /* Map row to option index (including confirm item) */
+            for (size_t idx = 0; idx < render_count; ++idx) {
                 int s = start_row + opt_row_start[idx];
                 int e = start_row + opt_row_end[idx];
                 if (click_row >= s && click_row <= e) {
@@ -1742,8 +1814,8 @@ cptk_status cptk_menu_multi_choice_interactive(
                 if (target >= 0 && focused != target) {
                     int prev = focused;
                     focused = target;
-                    cptk_menu_update_multi_item(out_handle, start_row, width, avail, items, item_count, out_selected_mask, prev, focused, opt_row_start, opt_row_end);
-                    cptk_menu_update_multi_item(out_handle, start_row, width, avail, items, item_count, out_selected_mask, focused, focused, opt_row_start, opt_row_end);
+                    cptk_menu_update_multi_item(out_handle, start_row, width, avail, items, item_count, out_selected_mask, prev, focused, opt_row_start, opt_row_end, 1);
+                    cptk_menu_update_multi_item(out_handle, start_row, width, avail, items, item_count, out_selected_mask, focused, focused, opt_row_start, opt_row_end, 1);
                     /* restore cursor to after menu */
                     CONSOLE_SCREEN_BUFFER_INFO csbi2; COORD ppos2;
                     if (GetConsoleScreenBufferInfo(out_handle, &csbi2)) {
@@ -1755,26 +1827,41 @@ cptk_status cptk_menu_multi_choice_interactive(
             }
 
             if (target >= 0) {
-                unsigned long now = GetTickCount();
-                if (btn == 2) { /* right click -> confirm */
-                    break;
+                /* Left-button press: only focus/select row, do not execute. */
+                if (!mouse_ev.is_release && btn == 0) {
+                    if (focused != target) {
+                        int prev = focused;
+                        focused = target;
+                        cptk_menu_update_multi_item(out_handle, start_row, width, avail, items, item_count, out_selected_mask, prev, focused, opt_row_start, opt_row_end, 1);
+                        cptk_menu_update_multi_item(out_handle, start_row, width, avail, items, item_count, out_selected_mask, focused, focused, opt_row_start, opt_row_end, 1);
+                    }
+                    continue;
                 }
-                /* Toggle on left press (btn==0) or on explicit release */
-                if (mouse_ev.is_release || btn == 0) {
-                    out_selected_mask[target] = out_selected_mask[target] ? 0 : 1;
-                    /* Update only the toggled item */
-                    cptk_menu_update_multi_item(out_handle, start_row, width, avail, items, item_count, out_selected_mask, target, focused, opt_row_start, opt_row_end);
+
+                /* Left-button release: toggle regular items; confirm only when
+                 * the dedicated confirm row is selected. */
+                if (mouse_ev.is_release) {
+                    if (focused != target) {
+                        int prev = focused;
+                        focused = target;
+                        cptk_menu_update_multi_item(out_handle, start_row, width, avail, items, item_count, out_selected_mask, prev, focused, opt_row_start, opt_row_end, 1);
+                    }
+
+                    if (target == confirm_index) {
+                        break;
+                    }
+
+                    if (target >= 0 && target < (int)item_count) {
+                        out_selected_mask[target] = out_selected_mask[target] ? 0 : 1;
+                        cptk_menu_update_multi_item(out_handle, start_row, width, avail, items, item_count, out_selected_mask, target, focused, opt_row_start, opt_row_end, 1);
+                    }
+
                     /* restore cursor to after menu */
                     CONSOLE_SCREEN_BUFFER_INFO csbi3; COORD ppos3;
                     if (GetConsoleScreenBufferInfo(out_handle, &csbi3)) {
                         ppos3.X = 0; ppos3.Y = (SHORT)(start_row + (int)total_rows);
                         SetConsoleCursorPosition(out_handle, ppos3);
                     }
-                    if (menu_mouse_double_click_hit(&click_state, target, (unsigned long long)now, double_click_ms)) {
-                        /* double click: finish */
-                        break;
-                    }
-                    menu_mouse_click_state_update(&click_state, target, (unsigned long long)now);
                 }
             }
             continue;
@@ -1783,21 +1870,30 @@ cptk_status cptk_menu_multi_choice_interactive(
         /* Keyboard navigation */
         if (key.key == CPTK_VT100_KEY_UP) {
             if (focused > 0) focused--;
-            (void)cptk_menu_render_multi_helper(out_handle, start_row, width, avail, items, item_count, out_selected_mask, focused, opt_row_start, opt_row_end);
+            (void)cptk_menu_render_multi_helper(out_handle, start_row, width, avail, items, item_count, out_selected_mask, focused, opt_row_start, opt_row_end, 1);
             continue;
         }
         if (key.key == CPTK_VT100_KEY_DOWN) {
-            if (focused + 1 < (int)item_count) focused++;
-            (void)cptk_menu_render_multi_helper(out_handle, start_row, width, avail, items, item_count, out_selected_mask, focused, opt_row_start, opt_row_end);
+            if (focused + 1 < (int)render_count) focused++;
+            (void)cptk_menu_render_multi_helper(out_handle, start_row, width, avail, items, item_count, out_selected_mask, focused, opt_row_start, opt_row_end, 1);
             continue;
         }
         if (key.key == CPTK_VT100_KEY_TEXT && key.codepoint == ' ') {
-            out_selected_mask[focused] = out_selected_mask[focused] ? 0 : 1;
-            (void)cptk_menu_render_multi_helper(out_handle, start_row, width, avail, items, item_count, out_selected_mask, focused, opt_row_start, opt_row_end);
+            if (focused >= 0 && focused < (int)item_count) {
+                out_selected_mask[focused] = out_selected_mask[focused] ? 0 : 1;
+            }
+            (void)cptk_menu_render_multi_helper(out_handle, start_row, width, avail, items, item_count, out_selected_mask, focused, opt_row_start, opt_row_end, 1);
             continue;
         }
         if (key.key == CPTK_VT100_KEY_ENTER) {
-            break;
+            if (focused == confirm_index) {
+                break;
+            }
+            if (focused >= 0 && focused < (int)item_count) {
+                out_selected_mask[focused] = out_selected_mask[focused] ? 0 : 1;
+                (void)cptk_menu_render_multi_helper(out_handle, start_row, width, avail, items, item_count, out_selected_mask, focused, opt_row_start, opt_row_end, 1);
+            }
+            continue;
         }
         if (key.key == CPTK_VT100_KEY_ESCAPE) {
             /* cancel: clear mask and return EINVAL */

@@ -98,6 +98,15 @@ static char *read_entire_file(const char *path) {
     return buf;
 }
 
+static char *menu_strdup(const char *s) {
+    if (!s) return NULL;
+#ifdef _WIN32
+    return _strdup(s);
+#else
+    return strdup(s);
+#endif
+}
+
 /* Extract a quoted JSON string for `key` between [start,end).
  * Returns a newly allocated string or NULL. This is forgiving and doesn't
  * handle all JSON escape cases; it's suitable for the project's menus.json.
@@ -206,10 +215,10 @@ int menu_load_options_from_json(const char *path, char ***out_values, char ***ou
             obj_end++;
         }
         if (depth != 0 || obj_end > arr_end) break;
-        /* extract label/value (prefer key as return token) */
+        /* extract label/value (prefer value as return token, fallback key) */
         char *label = extract_json_field(obj, obj_end, "\"label\"");
-        char *value = extract_json_field(obj, obj_end, "\"key\"");
-        if (!value) value = extract_json_field(obj, obj_end, "\"value\"");
+        char *value = extract_json_field(obj, obj_end, "\"value\"");
+        if (!value) value = extract_json_field(obj, obj_end, "\"key\"");
         if (!label) label = extract_json_field(obj, obj_end, "\"text\"");
         if (!label) label = extract_json_field(obj, obj_end, "\"name\"");
         if (label && value) {
@@ -375,7 +384,7 @@ int menu_load_options_from_csv(const char *path, char ***out_values, char ***out
                 if (pp && *pp) f2 = csv_next_field(&pp);
                 if (!f2) {
                     /* treat single column as value==label */
-                    f2 = _strdup(f1);
+                    f2 = menu_strdup(f1);
                 }
 
                 if (!f2 || !option_arrays_push(&vals, &labs, &cnt, &cap, f1, f2)) {
@@ -432,7 +441,7 @@ int menu_load_options_from_txt(const char *path, char ***out_values, char ***out
                 label = trim_copy_range(sep + 1, e);
             } else {
                 label = trim_copy_range(s, e);
-                value = _strdup(label);
+                value = menu_strdup(label);
             }
             if (value && label) {
                 if (!option_arrays_push(&vals, &labs, &cnt, &cap, value, label)) {
@@ -517,16 +526,16 @@ int menu_load_options_from_xml(const char *path, char ***out_values, char ***out
         const char *inner_start = tag_end + 1;
         const char *inner_end = close_tag ? close_tag : inner_start;
         /* extract attributes */
-        char *key = extract_xml_attr(use, tag_end, "key");
-        if (!key) key = extract_xml_attr(use, tag_end, "value");
+        char *key = extract_xml_attr(use, tag_end, "value");
+        if (!key) key = extract_xml_attr(use, tag_end, "key");
         char *label = NULL;
         if (close_tag) label = trim_copy_range(inner_start, inner_end);
         /* no-op */
         if (!label && key) {
-            label = strdup(key);
+            label = menu_strdup(key);
         }
         if (label) {
-            if (!key) key = strdup(label);
+            if (!key) key = menu_strdup(label);
             if (cnt + 1 > cap) {
                 size_t ncap = cap ? cap * 2 : 8;
                 char **nv = (char **)realloc(vals, ncap * sizeof(char*));
@@ -598,7 +607,7 @@ int menu_load_options_from_yaml(const char *path, char ***out_values, char ***ou
                 } else {
                     /* single token becomes label/value */
                     label = trim_copy_range(lstart, lend);
-                    if (label) value = strdup(label);
+                    if (label) value = menu_strdup(label);
                 }
             }
             /* if no inline fields, check following indented lines for key/label */
@@ -631,7 +640,7 @@ int menu_load_options_from_yaml(const char *path, char ***out_values, char ***ou
                 }
                 if (*lnend == '\n') next = (char *)lnend + 1; else next = (char *)lnend;
             }
-            if (label && !value) value = strdup(label);
+            if (label && !value) value = menu_strdup(label);
             if (value && label) {
                 if (cnt + 1 > cap) {
                     size_t ncap = cap ? cap * 2 : 8;
@@ -671,7 +680,7 @@ int menu_load_options_from_toml(const char *path, char ***out_values, char ***ou
         if (s < lend && *s == '[' && s + 1 < lend && *(s + 1) == '[') {
             /* '[[options]]' */
             if (in_table && cur_label) {
-                if (!cur_value) cur_value = strdup(cur_label);
+                if (!cur_value) cur_value = menu_strdup(cur_label);
                 if (cnt + 1 > cap) {
                     size_t ncap = cap ? cap * 2 : 8;
                     char **nv = (char **)realloc(vals, ncap * sizeof(char*));
@@ -679,7 +688,7 @@ int menu_load_options_from_toml(const char *path, char ***out_values, char ***ou
                     if (!nv || !nl) { break; }
                     vals = nv; labs = nl; cap = ncap;
                 }
-                vals[cnt] = cur_value ? cur_value : strdup(""); labs[cnt] = cur_label ? cur_label : strdup(""); cnt++;
+                vals[cnt] = cur_value ? cur_value : menu_strdup(""); labs[cnt] = cur_label ? cur_label : menu_strdup(""); cnt++;
                 cur_value = NULL; cur_label = NULL;
             }
             in_table = (strstr(s, "[[options]]") != NULL);
@@ -708,7 +717,7 @@ int menu_load_options_from_toml(const char *path, char ***out_values, char ***ou
         line = (*lend == '\n') ? lend + 1 : lend;
     }
     if (in_table && cur_label) {
-        if (!cur_value) cur_value = strdup(cur_label);
+        if (!cur_value) cur_value = menu_strdup(cur_label);
         if (cnt + 1 > cap) {
             size_t ncap = cap ? cap * 2 : 8;
             char **nv = (char **)realloc(vals, ncap * sizeof(char*));
@@ -716,7 +725,7 @@ int menu_load_options_from_toml(const char *path, char ***out_values, char ***ou
             if (!nv || !nl) { /* fallthrough */ }
             else { vals = nv; labs = nl; cap = ncap; }
         }
-        vals[cnt] = cur_value ? cur_value : strdup(""); labs[cnt] = cur_label ? cur_label : strdup(""); cnt++;
+        vals[cnt] = cur_value ? cur_value : menu_strdup(""); labs[cnt] = cur_label ? cur_label : menu_strdup(""); cnt++;
     }
     free(buf);
     if (cnt == 0) { if (vals) free(vals); if (labs) free(labs); return 0; }
@@ -786,8 +795,7 @@ int menu_choice_interactive(const char *title, const char *const *items, size_t 
         cptk_status st = cptk_menu_choice_interactive(ctx, title ? title : "", items, item_count, default_index, &sel);
         cptk_context_destroy(ctx);
         if (st == CPTK_STATUS_OK) {
-            strncpy(out_value, items[sel] ? items[sel] : "", out_capacity - 1);
-            out_value[out_capacity - 1] = '\0';
+            snprintf(out_value, out_capacity, "%s", items[sel] ? items[sel] : "");
             return 0;
         }
     }
@@ -797,13 +805,12 @@ int menu_choice_interactive(const char *title, const char *const *items, size_t 
     }
     printf("%s", title ? title : "选择: "); fflush(stdout);
     int idx = 0;
-    if (scanf("%d", &idx) != 1) {
-        return -1;
-    }
+    char line[64];
+    if (!fgets(line, sizeof(line), stdin)) return -1;
+    idx = atoi(line);
     if (idx < 1) idx = 1;
     if ((size_t)idx > item_count) idx = (int)item_count;
-    strncpy(out_value, items[idx - 1] ? items[idx - 1] : "", out_capacity - 1);
-    out_value[out_capacity - 1] = '\0';
+    snprintf(out_value, out_capacity, "%s", items[idx - 1] ? items[idx - 1] : "");
     return 0;
 }
 
@@ -827,11 +834,21 @@ int menu_multi_choice_interactive(const char *title, const char *const *items, s
         printf("选择（以逗号分隔索引）: "); fflush(stdout);
         char line[4096];
         if (!fgets(line, sizeof(line), stdin)) { free(mask); return -1; }
-        char *tok = strtok(line, ", \t\n");
+        char *tok = NULL;
+    #ifdef _WIN32
+        char *ctx_tok = NULL;
+        tok = strtok_s(line, ", \t\n", &ctx_tok);
+    #else
+        tok = strtok(line, ", \t\n");
+    #endif
         while (tok) {
             int idx = atoi(tok);
             if (idx >= 1 && (size_t)idx <= item_count) mask[idx - 1] = 1;
+    #ifdef _WIN32
+            tok = strtok_s(NULL, ", \t\n", &ctx_tok);
+    #else
             tok = strtok(NULL, ", \t\n");
+    #endif
         }
     }
 

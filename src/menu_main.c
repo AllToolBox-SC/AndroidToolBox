@@ -12,7 +12,9 @@
 #include <locale.h>
 #ifdef _WIN32
 # include <windows.h>
+# include <commdlg.h>
 # include <io.h>
+# pragma comment(lib, "Comdlg32.lib")
 #else
 # include <unistd.h>
 #endif
@@ -56,6 +58,100 @@ static int menu_is_logo_option(const char *arg) {
 static void menu_print_error(const char *msg) {
     if (!msg || !msg[0]) return;
     fprintf(stderr, "[错误]%s\n", msg);
+}
+
+static void menu_extract_dir(const char *path, char *out_dir, size_t out_size) {
+    size_t len;
+    if (!out_dir || out_size == 0) return;
+    out_dir[0] = '\0';
+    if (!path || !path[0]) return;
+
+    snprintf(out_dir, out_size, "%s", path);
+    len = strlen(out_dir);
+    while (len > 0) {
+        char c = out_dir[len - 1];
+        if (c == '\\' || c == '/') {
+            out_dir[len - 1] = '\0';
+            break;
+        }
+        len--;
+    }
+}
+
+static int menu_guess_default_config_path(char *out_path, size_t out_size) {
+    const char *candidates[] = {
+        "src\\menu\\start\\menus.json",
+        "menu\\start\\menus.json",
+        "test\\test_options.yml",
+        "test\\test_options.toml",
+        "test\\test_options.xml",
+        "test\\test_options.csv",
+        "test\\test_options.txt"
+    };
+    size_t i;
+    if (!out_path || out_size == 0) return 0;
+    out_path[0] = '\0';
+    for (i = 0; i < sizeof(candidates) / sizeof(candidates[0]); ++i) {
+        if (menu_path_exists(candidates[i])) {
+            snprintf(out_path, out_size, "%s", candidates[i]);
+            return 1;
+        }
+    }
+    return 0;
+}
+
+static int menu_pick_config_file(char *out_path, size_t out_size) {
+    if (!out_path || out_size == 0) return 0;
+    out_path[0] = '\0';
+
+#ifdef _WIN32
+    OPENFILENAMEA ofn;
+    char file_buf[MAX_PATH * 4];
+    char default_path[MAX_PATH * 4];
+    char initial_dir[MAX_PATH * 4];
+
+    memset(&ofn, 0, sizeof(ofn));
+    memset(file_buf, 0, sizeof(file_buf));
+    memset(default_path, 0, sizeof(default_path));
+    memset(initial_dir, 0, sizeof(initial_dir));
+
+    if (menu_guess_default_config_path(default_path, sizeof(default_path))) {
+        snprintf(file_buf, sizeof(file_buf), "%s", default_path);
+        menu_extract_dir(default_path, initial_dir, sizeof(initial_dir));
+    }
+
+    ofn.lStructSize = sizeof(ofn);
+    ofn.hwndOwner = NULL;
+    ofn.lpstrFile = file_buf;
+    ofn.nMaxFile = (DWORD)sizeof(file_buf);
+    ofn.lpstrFilter =
+        "菜单配置文件 (*.json;*.yaml;*.yml;*.toml;*.xml;*.csv;*.txt)\0"
+        "*.json;*.yaml;*.yml;*.toml;*.xml;*.csv;*.txt\0"
+        "所有文件 (*.*)\0*.*\0\0";
+    ofn.nFilterIndex = 1;
+    ofn.lpstrDefExt = "json";
+    ofn.lpstrInitialDir = initial_dir[0] ? initial_dir : NULL;
+    ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
+    ofn.lpstrTitle = "请选择菜单配置文件";
+
+    if (GetOpenFileNameA(&ofn)) {
+        snprintf(out_path, out_size, "%s", file_buf);
+        return 1;
+    }
+
+    return 0;
+#else
+    printf("请输入配置文件路径: ");
+    fflush(stdout);
+    if (!fgets(out_path, (int)out_size, stdin)) return 0;
+    {
+        size_t len = strlen(out_path);
+        while (len > 0 && (out_path[len - 1] == '\n' || out_path[len - 1] == '\r')) {
+            out_path[--len] = '\0';
+        }
+    }
+    return out_path[0] ? 1 : 0;
+#endif
 }
 
 static void menu_try_run_logo(void) {
@@ -292,8 +388,8 @@ static int menu_load_options_from_json_main(const char *path, char ***out_values
         if (depth != 0 || obj_end > arr_end) break;
 
         char *label = menu_extract_json_field_local(obj, obj_end, "\"label\"");
-        char *value = menu_extract_json_field_local(obj, obj_end, "\"key\"");
-        if (!value) value = menu_extract_json_field_local(obj, obj_end, "\"value\"");
+        char *value = menu_extract_json_field_local(obj, obj_end, "\"value\"");
+        if (!value) value = menu_extract_json_field_local(obj, obj_end, "\"key\"");
         if (!label) label = menu_extract_json_field_local(obj, obj_end, "\"text\"");
 
         if (label && value) {
@@ -337,9 +433,12 @@ static int menu_load_options_from_json_main(const char *path, char ***out_values
 
 int main(int argc, char **argv) {
     const char *config_path = NULL;
+    char selected_config_path[MAX_PATH * 4];
     int multi_select = 0;
     int run_logo = 0;
     int i;
+
+    memset(selected_config_path, 0, sizeof(selected_config_path));
 
     menu_setup_console_utf8();
     menu_mouse_click_state_reset(menu_get_global_mouse_click_state());
@@ -423,26 +522,35 @@ int main(int argc, char **argv) {
                 printf("选择（以逗号分隔索引）: "); fflush(stdout);
                 char *line = menu_read_line_dynamic(stdin);
                 if (!line) { free(mask); menu_free_options(values, labels, count); return 1; }
-                char *tok = strtok(line, ", \t\n");
+                char *tok = NULL;
+#ifdef _WIN32
+                char *ctx_tok = NULL;
+                tok = strtok_s(line, ", \t\n", &ctx_tok);
+#else
+                tok = strtok(line, ", \t\n");
+#endif
                 while (tok) {
                     int idx = atoi(tok);
                     if (idx >= 1 && (size_t)idx <= count) mask[idx - 1] = 1;
+#ifdef _WIN32
+                    tok = strtok_s(NULL, ", \t\n", &ctx_tok);
+#else
                     tok = strtok(NULL, ", \t\n");
+#endif
                 }
                 free(line);
             }
 
             menu_clear_console_after_select();
-            /* Write menutmp.txt as 1-based option indices */
+            /* Write menutmp.txt */
             FILE *f = fopen("menutmp.txt", "w");
             if (f) {
                 int first = 1;
                 for (size_t i = 0; i < count; ++i) {
                     if (!mask[i]) continue;
-                    char idx_buf[32];
-                    snprintf(idx_buf, sizeof(idx_buf), "%zu", i + 1);
+                    const char *v = values[i] ? values[i] : "";
                     if (!first) fputc(',', f);
-                    fwrite(idx_buf, 1, strlen(idx_buf), f);
+                    if (v[0]) fwrite(v, 1, strlen(v), f);
                     first = 0;
                 }
                 fclose(f);
@@ -465,18 +573,21 @@ int main(int argc, char **argv) {
                 for (size_t i = 0; i < count; ++i) printf("%3zu. %s\n", i + 1, labels[i] ? labels[i] : "");
                 printf("%s", "选择: "); fflush(stdout);
                 int idx = 0;
-                if (scanf("%d", &idx) != 1) { menu_free_options(values, labels, count); return 1; }
+                char *line = menu_read_line_dynamic(stdin);
+                if (!line) { menu_free_options(values, labels, count); return 1; }
+                idx = atoi(line);
+                free(line);
                 if (idx < 1) idx = 1;
                 if ((size_t)idx > count) idx = (int)count;
                 sel = (size_t)(idx - 1);
             }
 
             menu_clear_console_after_select();
-            char idx_buf[32];
-            snprintf(idx_buf, sizeof(idx_buf), "%zu", sel + 1);
+            const char *v = values[sel] ? values[sel] : "";
             FILE *f = fopen("menutmp.txt", "w");
             if (f) {
-                fwrite(idx_buf, 1, strlen(idx_buf), f);
+                if (v[0]) fwrite(v, 1, strlen(v), f);
+                else fwrite("", 1, 0, f);
                 fclose(f);
             }
             menu_free_options(values, labels, count);

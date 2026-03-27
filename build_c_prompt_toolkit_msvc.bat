@@ -90,6 +90,13 @@ if errorlevel 1 (
   exit /b 1
 )
 
+echo Building pause.exe ...
+cl /nologo /W3 /MD /O2 /utf-8 /Fe:bin\pause.exe src\pause_main.c src\pause.c /link /SUBSYSTEM:CONSOLE
+if errorlevel 1 (
+  echo Failed to build pause.exe
+  exit /b 1
+)
+
 echo Building c_prompt_toolkit_replay.exe ...
 cl /nologo /W3 /MD /O2 /utf-8 !CPTK_DEFS! %CPTK_INC% /Fe:bin\c_prompt_toolkit_replay.exe src\c_prompt_toolkit_replay.c src\c_prompt_toolkit_buffer.c src\c_prompt_toolkit_keymap.c /link /SUBSYSTEM:CONSOLE %CPTK_LIBS%
 if errorlevel 1 (
