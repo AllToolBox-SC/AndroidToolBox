@@ -1,0 +1,17 @@
+<options>
+    <option value="A" label="返回上级菜单" />
+    <option value="1" label="Z2" />
+    <option value="2" label="Z3" />
+    <option value="3" label="Z5A" />
+    <option value="4" label="Z5Q" />
+    <option value="5" label="Z5PRO" />
+    <option value="6" label="Z6" />
+    <option value="7" label="Z6巅峰版" />
+    <option value="8" label="Z7" />
+    <option value="9" label="Z7A" />
+    <option value="10" label="Z7S" />
+    <option value="11" label="Z8(或少年版)" />
+    <option value="12" label="Z8A" />
+    <option value="13" label="Z9(或少年版)" />
+    <option value="14" label="Z10(或少年版)" />
+</options>

@@ -1,0 +1,7 @@
+<options>
+    <option value="A" label="返回上级菜单" />
+    <option value="1" label="重启至系统" />
+    <option value="2" label="重启至Bootloader/Fastboot" />
+    <option value="3" label="重启至recovery" />
+    <option value="4" label="重启至9008" />
+</options>

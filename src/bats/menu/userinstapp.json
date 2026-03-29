@@ -1,0 +1,10 @@
+{
+  "options": [
+    {"value": "A", "label": "返回上级菜单"},
+    {"value": "1", "label": "选择并安装单个APK文件"},
+    {"value": "2", "label": "选择并安装多个APK文件"},
+    {"value": "3", "label": "选择一个文件夹并安装其中的所有APK文件"},
+    {"value": "4", "label": "检查adb设备连接"},
+    {"value": "5", "label": "选择安装方式"}
+  ]
+}

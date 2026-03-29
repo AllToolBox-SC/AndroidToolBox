@@ -1,0 +1,6 @@
+<options>
+    <option value="A" label="返回上级菜单" />
+    <option value="1" label="高版本[z6巅峰版及以上]" />
+    <option value="2" label="低版本[z6及以下]" />
+    <option value="3" label="跳过引导" />
+</options>

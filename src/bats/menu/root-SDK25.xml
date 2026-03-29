@@ -1,0 +1,4 @@
+<options
+    <option value="1" label="BOOT方案[如果已经降级请选择此方案]" />
+    <option value="2" label="Recovery方案[最新系统可使用此方案]" />
+</options>

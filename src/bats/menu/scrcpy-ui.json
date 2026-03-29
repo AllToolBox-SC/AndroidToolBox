@@ -1,0 +1,25 @@
+{
+  "options": [
+    {"value": "A", "label": "返回上级菜单"},
+    {"value": "C", "label": "清除所有参数"},
+    {"value": "S", "label": "启动投屏"},
+    {"value": "1", "label": "禁用设备控制 (--no-control)"},
+    {"value": "2", "label": "启动时关闭设备屏幕 (--turn-screen-off)"},
+    {"value": "3", "label": "保持设备唤醒 (--stay-awake)"},
+    {"value": "4", "label": "录制屏幕到文件 (--record=FILE.mp4)"},
+    {"value": "5", "label": "录制时不包含音频 (--no-audio)"},
+    {"value": "6", "label": "启用音频转发 (--audio)"},
+    {"value": "7", "label": "禁用剪贴板自动同步 (--no-clipboard-autosync)"},
+    {"value": "8", "label": "使用旧版粘贴方式 (--legacy-paste)"},
+    {"value": "9", "label": "在设备上显示触摸 (--show-touches)"},
+    {"value": "10", "label": "设置最大帧率 (--max-fps=FPS)"},
+    {"value": "11", "label": "窗口置顶 (--always-on-top)"},
+    {"value": "12", "label": "全屏启动 (--fullscreen)"},
+    {"value": "13", "label": "无边框窗口 (--window-borderless)"},
+    {"value": "14", "label": "设置录制格式 (--record-format=FORMAT)"},
+    {"value": "15", "label": "设置视频比特率 (--bit-rate=RATE)"},
+    {"value": "16", "label": "裁剪屏幕区域 (--crop=W:H:X:Y)"},
+    {"value": "17", "label": "设置窗口标题 (--window-title=TEXT)"},
+    {"value": "18", "label": "设置显示最大尺寸 (--max-size=WIDTH)"}
+  ]
+}

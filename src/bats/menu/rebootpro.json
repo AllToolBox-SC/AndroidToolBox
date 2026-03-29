@@ -1,0 +1,9 @@
+{
+  "options": [
+    {"value": "A", "label": "返回上级菜单"},
+    {"value": "1", "label": "重启至系统"},
+    {"value": "2", "label": "重启至Bootloader/Fastboot"},
+    {"value": "3", "label": "重启至recovery"},
+    {"value": "4", "label": "重启至9008"}
+  ]
+}

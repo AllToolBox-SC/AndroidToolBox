@@ -1,0 +1,7 @@
+<options>
+    <option value="A" label="返回上级菜单" />
+    <option value="1" label="列出所有应用" />
+    <option value="2" label="列出所有第三方应用" />
+    <option value="3" label="卸载指定包名的应用" />
+    <option value="4" label="检查adb设备连接" />
+</options>

@@ -1,0 +1,9 @@
+{
+  "options": [
+    {"value": "A", "label": "返回上级菜单"},
+    {"value": "1", "label": "install方式安装"},
+    {"value": "2", "label": "data方式安装"},
+    {"value": "3", "label": "调用第三方安装器安装"},
+    {"value": "4", "label": "install-create方式安装"}
+  ]
+}
