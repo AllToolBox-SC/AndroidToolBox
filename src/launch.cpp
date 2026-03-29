@@ -1,4 +1,6 @@
 #include "launch.h"
+#include <string>
+#include <vector>
 
 const std::wstring RUN_BAT_CMD = L"main.exe";
 
@@ -70,7 +72,7 @@ void ElevatePrivileges()
     }
 }
 
-void RunMainBat()
+void RunMainBat(int argc, wchar_t* argv[])
 {
     printf("\033[94m[信息]\033[97m正在启动中...\033[0m\n");
     STARTUPINFOW si;
@@ -79,7 +81,21 @@ void RunMainBat()
     ZeroMemory(&si, sizeof(si));
     si.cb = sizeof(si);
     DWORD flags = 0;
-    BOOL isOk = CreateProcessW(NULL, (LPWSTR)RUN_BAT_CMD.c_str(), NULL, NULL, FALSE, flags, NULL, NULL, &si, &pi);
+
+    // Build command line: main.exe [args...]
+    std::wstring cmd = RUN_BAT_CMD;
+    for (int i = 1; i < argc; ++i)
+    {
+        cmd.push_back(L' ');
+        cmd.push_back(L'"');
+        cmd.append(argv[i]);
+        cmd.push_back(L'"');
+    }
+
+    std::vector<wchar_t> cmdline(cmd.begin(), cmd.end());
+    cmdline.push_back(L'\0');
+
+    BOOL isOk = CreateProcessW(NULL, cmdline.data(), NULL, NULL, FALSE, flags, NULL, NULL, &si, &pi);
     if (!isOk)
     {
         std::cerr << "CreateProcessW failed with error: " << GetLastError() << std::endl;
@@ -87,7 +103,7 @@ void RunMainBat()
     }
 }
 
-int wmain()
+int wmain(int argc, wchar_t* argv[])
 {
     SetConsoleOutputCP(936);
     if (!IsRunAsAdmin())
@@ -97,7 +113,7 @@ int wmain()
 #if DEBUG
     printf("[INFO] 程序提权成功");
 #endif
-    RunMainBat();
+    RunMainBat(argc, argv);
 
     return 0;
 }
