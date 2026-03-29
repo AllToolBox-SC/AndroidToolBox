@@ -8,12 +8,13 @@ echo %CYAN%正在安装：%RESET%%PINK%%args1%%RESET%
 REM 创建临时目录
 if not exist ".\tmp" mkdir ".\tmp"
 REM 执行安装并将输出重定向到临时文件
-if "%args2%"=="nostreaming" adb wait-for-device install -r -t -d --no-streaming "%args1%" > ".\tmp\instapptmp.txt"
-if "%args2%"=="install" adb wait-for-device install -r -t -d "%args1%" > ".\tmp\instapptmp.txt"
+if "%args2%"=="nostreaming" call adbdevice adb && adb install -r -t -d --no-streaming "%args1%" > ".\tmp\instapptmp.txt"
+if "%args2%"=="install" call adbdevice adb && adb install -r -t -d "%args1%" > ".\tmp\instapptmp.txt"
 if "%args2%"=="data" goto data
 if "%args2%"=="create" goto create
 if "%args2%"=="3install" goto 3install
-adb wait-for-device install -r -t -d "%args1%" > ".\tmp\instapptmp.txt"
+call adbdevice adb
+adb install -r -t -d "%args1%" > ".\tmp\instapptmp.txt"
 :instfind
 REM 检查输出中是否包含Success
 if not exist ".\tmp\instapptmp.txt" %ERROR%发生错误，没有任何安装命令被调用，请检查语法是否正确 & goto error
@@ -56,7 +57,8 @@ if !errorlevel! neq 0 (
 
 REM 推送APK文件到应用目录
 echo %INFO% 推送APK文件到应用目录...%RESET%
-adb wait-for-device push "!args1!" /data/local/tmp/!APK_NAME! > ".\tmp\instapptmp.txt" 2>&1
+call adbdevice adb
+adb push "!args1!" /data/local/tmp/!APK_NAME! > ".\tmp\instapptmp.txt" 2>&1
 if !errorlevel! neq 0 (
     echo %ERROR% 推送APK到临时目录失败%RESET%
     type ".\tmp\instapptmp.txt" 2>nul
@@ -132,7 +134,8 @@ if !errorlevel! neq 0 (
 
 REM 推送APK文件到应用目录
 echo %INFO% 推送APK文件到应用目录...%RESET%
-adb wait-for-device push "!args1!" /data/local/tmp/!APK_NAME! > ".\tmp\instapptmp.txt" 2>&1
+call adbdevice adb
+adb push "!args1!" /data/local/tmp/!APK_NAME! > ".\tmp\instapptmp.txt" 2>&1
 if !errorlevel! neq 0 (
     echo %ERROR% 推送APK到临时目录失败%RESET%
     type ".\tmp\instapptmp.txt" 2>nul
@@ -224,7 +227,8 @@ echo %INFO% 会话创建成功: [!SESSION_ID!]%RESET%
 
 REM 推送APK文件到设备临时目录
 echo %INFO% 推送APK文件到设备...%RESET%
-adb wait-for-device push "!args1!" /data/local/tmp/!APK_NAME!
+call adbdevice adb
+adb push "!args1!" /data/local/tmp/!APK_NAME!
 
 REM 写入会话
 echo %INFO% 写入安装会话...%RESET%
@@ -245,13 +249,16 @@ if not exist ".\tmp" mkdir ".\tmp"
 
 REM 推送APK文件到设备临时目录
 echo %INFO% 推送APK文件到设备...%RESET%
-adb wait-for-device push "!args1!" /sdcard/tmp.apk
+call adbdevice adb
+adb push "!args1!" /sdcard/tmp.apk
 
 echo %INFO% 开始调用安装器安装...%RESET%
 adb shell am start -a android.intent.action.VIEW -d file:///sdcard/tmp.apk -t application/vnd.android.package-archive > ".\tmp\instapptmp.txt" 2>&1
 echo %INFO% 请在设备上进行安装后按任意键继续
 pause >nul
 echo %GREEN% 安装完成！%RESET%
+call adbdevice adb
+adb shell rm /sdcard/tmp.apk
 if exist ".\tmp\instapptmp.txt" del ".\tmp\instapptmp.txt" >nul 2>&1
 endlocal
 set /a SUCCESS+=1

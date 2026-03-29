@@ -1,6 +1,15 @@
 ::call sel file   [s m] %framwork_workspace% [img][bin]...(可选)
-::         folder [s m] %framwork_workspace%
+::call sel folder [s m] %framwork_workspace%
 
+::%sel__file_path% - 文件的完整路径
+::%sel__file_fullname% - 文件名（包含扩展名）
+::%sel__file_name% - 文件名（不包含扩展名）
+::%sel__file_ext% - 文件扩展名（不包含点号）
+::%sel__file_folder% - 文件所在目录路径
+::%sel__folder_path% - 文件夹的完整路径
+::%sel__folder_name% - 文件夹名称
+::%sel__files% - 多个文件的路径
+::%sel__files% - 多个文件的路径
 
 @ECHO OFF
 set var1=%1& set var2=%2& set var3=%3& set var4=%4& set var5=%5& set var6=%6& set var7=%7& set var8=%8& set var9=%9

@@ -3,15 +3,8 @@
 CLS
 call logo.bat
 ECHO %ORANGE%卸载应用菜单%YELLOW%
-ECHO ╔══════════════════════════════════════════════════╗
-ECHO ║A.返回上级菜单                                    ║
-ECHO ║1.列出所有应用                                    ║
-ECHO ║2.列出所有第三方应用                              ║
-ECHO ║3.卸载指定包名的应用                              ║
-ECHO ║4.检查adb设备连接                                 ║
-ECHO ╚══════════════════════════════════════════════════╝
-ECHO.%RESET%
-set /p MENU=%YELLOW%请输入序号并按下回车键：%RESET%
+menu.exe .\menu\unapp.xml
+set /p MENU=<menutmp.txt
 if "%MENU%"=="A" exit /b
 if "%MENU%"=="a" exit /b
 if "%MENU%"=="1" echo.%INFO% 所有应用列表:%RESET% & adb shell pm list packages & pause & goto MAIN_MENU

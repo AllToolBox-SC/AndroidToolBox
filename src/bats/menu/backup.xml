@@ -1,0 +1,7 @@
+<options>
+    <option value="A" label="返回上级菜单" />
+    <option value="1" label="备份相册" />
+    <option value="2" label="恢复相册" />
+    <option value="3" label="9008唯一分区备份" />
+    <option value="4" label="9008唯一分区恢复" />
+</options>

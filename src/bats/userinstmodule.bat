@@ -2,15 +2,8 @@
 CLS
 call logo.bat
 ECHO %ORANGE%刷入模块菜单%YELLOW%
-ECHO ╔══════════════════════════════════════════════════╗
-ECHO ║A.返回上级菜单                                    ║
-ECHO ║1.选择并刷入单个模块文件                          ║
-ECHO ║2.选择并刷入多个模块文件                          ║
-ECHO ║3.选择一个文件夹并刷入其中的所有模块文件          ║
-ECHO ║4.检查adb设备连接                                 ║
-ECHO ╚══════════════════════════════════════════════════╝
-ECHO.%RESET%
-set /p MENU=%YELLOW%请输入序号并按下回车键：%RESET%
+menu.exe .\menu\userinstmodule.xml
+set /p MENU=<menutmp.txt
 if "%MENU%"=="A" exit /b
 if "%MENU%"=="a" exit /b
 if "%MENU%"=="1" goto INSTALL_SINGLE_SEL
@@ -33,9 +26,9 @@ ECHO.请接入ADB设备...
 device_check.exe adb&&ECHO.
 ECHO.
 
-for /f "delims=" %%i in ('adb wait-for-device shell getprop ro.product.innermodel') do set innermodel=%%i
+for /f "delims=" %%i in ('adb shell getprop ro.product.innermodel') do set innermodel=%%i
 ECHO.%INFO%您的设备innermodel为:%innermodel%
-for /f "delims=" %%i in ('adb wait-for-device shell getprop ro.build.version.release') do set androidversion=%%i
+for /f "delims=" %%i in ('adb shell getprop ro.build.version.release') do set androidversion=%%i
 ECHO.%INFO%您的设备安卓版本为:%androidversion%
 echo %INFO% 正在刷入模块...%RESET%
 if "%androidversion%"=="7.1.1" (call instmodule2.bat %sel__file_path%) else if "%androidversion%"=="4.4.4" (call instmodule2.bat %sel__file_path%) else (call instmodule.bat %sel__file_path%)
@@ -67,9 +60,9 @@ for %%f in (%sel__files:/= %) do (
 ECHO.请接入ADB设备...
 device_check.exe adb&&ECHO.
 echo.
-for /f "delims=" %%i in ('adb wait-for-device shell getprop ro.product.innermodel') do set innermodel=%%i
+for /f "delims=" %%i in ('adb shell getprop ro.product.innermodel') do set innermodel=%%i
 ECHO.%INFO%您的设备innermodel为:%innermodel%
-for /f "delims=" %%i in ('adb wait-for-device shell getprop ro.build.version.release') do set androidversion=%%i
+for /f "delims=" %%i in ('adb shell getprop ro.build.version.release') do set androidversion=%%i
 ECHO.%INFO%您的设备安卓版本为:%androidversion%
 echo %INFO% 开始批量刷入...%RESET%
 
@@ -114,9 +107,9 @@ if !COUNT! equ 0 (
 ECHO.请接入ADB设备...
 device_check.exe adb&&ECHO.
 echo.
-for /f "delims=" %%i in ('adb wait-for-device shell getprop ro.product.innermodel') do set innermodel=%%i
+for /f "delims=" %%i in ('adb shell getprop ro.product.innermodel') do set innermodel=%%i
 ECHO.%INFO%您的设备innermodel为:%innermodel%
-for /f "delims=" %%i in ('adb wait-for-device shell getprop ro.build.version.release') do set androidversion=%%i
+for /f "delims=" %%i in ('adb shell getprop ro.build.version.release') do set androidversion=%%i
 ECHO.%INFO%您的设备安卓版本为:%androidversion%
 echo %INFO% 开始批量刷入...%RESET%
 

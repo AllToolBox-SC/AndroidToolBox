@@ -1,0 +1,19 @@
+{
+  "options": [
+    {"value": "A", "label": "返回上级菜单"},
+    {"value": "1", "label": "Z2"},
+    {"value": "2", "label": "Z3"},
+    {"value": "3", "label": "Z5A"},
+    {"value": "4", "label": "Z5Q"},
+    {"value": "5", "label": "Z5PRO"},
+    {"value": "6", "label": "Z6"},
+    {"value": "7", "label": "Z6巅峰版"},
+    {"value": "8", "label": "Z7"},
+    {"value": "9", "label": "Z7A"},
+    {"value": "10", "label": "Z7S"},
+    {"value": "11", "label": "Z8(或少年版)"},
+    {"value": "12", "label": "Z8A"},
+    {"value": "13", "label": "Z9(或少年版)"},
+    {"value": "14", "label": "Z10(或少年版)"}
+  ]
+}

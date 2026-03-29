@@ -1,34 +1,33 @@
 @echo off
 echo.%WARN%免责声明及风险须知：
-echo.%ERROR%该功能已经被小天才制裁掉了，现在只有你和被加的好友在同一个群里才能加
+echo.%ERROR%该功能已经被XTC制裁掉了，现在只有你和被加的好友在同一个群里才能加
 echo.%WARN%本工具仅为个人合法使用场景设计，仅限添加已知并且对方已回意的好友严禁用于恶意骚扰、侵犯他人隐私、违反平台用户协议及相关法律法规的非法用途，任何因滥用本工具导致的账号封禁、法律责任、民事纠纷等一切后果，均由使用者自行承担，我们并未强求您使用本工具，请不要为他人进行操作，即使他人已同意，如果您仍然在帮助他人此工具，若遇到以上行为都与工具开发者无关我方不会将您的账号上传到云端并且泄露，如果遇到账号泄露，与我方无任何关系，需由手表机主及其监护人自行承担%RESET%
 echo.%INFO%请看完免责声明及风险须知后按任意键继续
 pause >nul
-::提取手表信息
+
 cls
 echo %INFO%准备提取设备基础信息%RESET%
-echo %INFO%等待ADB连接...&adb wait-for-device >nul
-echo %GREEN%设备已连接%RESET%
+device_check.exe adb&&ECHO.
 for /f "tokens=*" %%a in ('adb shell getprop persist.sys.watch.id') do set "PROP7=%%a"
-adb wait-for-device shell getprop persist.sys.watch.id > friend\watchid.txt
+adb shell getprop persist.sys.watch.id > friend\watchid.txt
 for /f "tokens=*" %%a in ('adb shell "content query --uri content://com.xtc.provider/BaseDataProvider/watchId/1 --projection openID | cut -d= -f2"') do set "PROP8=%%a"
-adb wait-for-device shell "content query --uri content://com.xtc.provider/BaseDataProvider/watchId/1 --projection openID | cut -d= -f2" > friend\openid.txt
+adb shell "content query --uri content://com.xtc.provider/BaseDataProvider/watchId/1 --projection openID | cut -d= -f2" > friend\openid.txt
 for /f "tokens=*" %%a in ('adb shell getprop ro.boot.bindnumber') do set "PROP4=%%a"
-adb wait-for-device shell getprop ro.boot.bindnumber > friend\bindnumber.txt
+adb shell getprop ro.boot.bindnumber > friend\bindnumber.txt
 for /f "tokens=*" %%a in ('adb shell getprop persist.sys.serverinner') do set "PROP2=%%a"
-adb wait-for-device shell getprop persist.sys.serverinner > friend\serverinner.txt
+adb shell getprop persist.sys.serverinner > friend\serverinner.txt
 
 echo %INFO%已获取设备信息，存在bin文件夹中的friend文件夹，你可随时删除或修改，若删除后，需要重新提取%RESET%
 
 echo %INFO%正在读取配置文件...%RESET%
 
-:: 定义文件路径
+
 set "BIND_FILE=friend\bindnumber.txt"
 set "ACCOUNTID_FILE=friend\watchid.txt"
 set "CHIPID_FILE=friend\openid.txt"
 set "MODEL_FILE=friend\serverinner.txt"
 
-:: 检查文件是否存在并读取内容
+
 if not exist "%BIND_FILE%" (
     echo %ERROR%未找到 %BIND_FILE% 文件%RESET%
     pause
@@ -97,14 +96,14 @@ echo.
 set "URL=https://watch.okii.com/watchfriend/group/audit"
 set "BASE_REQUEST_PARAM={\"accountId\":\"!ACCOUNTID!\",\"appId\":\"2\",\"deviceId\":\"!BIND!\",\"imFlag\":\"1\",\"mac\":\"unknown\",\"program\":\"watch\",\"registId\":0,\"timestamp\":\"2024-08-12 14:43:48\",\"token\":\"!CHIPID!\"}"
 
-:: 分割ID列表
+
 set "ID_COUNT=0"
 for %%i in (!IDS!) do (
     set /a ID_COUNT+=1
     set "ID[!ID_COUNT!]=%%i"
 )
 
-:: 批量发送请求
+
 echo %INFO%开始处理好友请求...%RESET%
 echo.
 
@@ -113,7 +112,7 @@ for /l %%n in (1,1,!ID_COUNT!) do (
     
     echo %INFO%正在处理好友ID: !FRIEND_ID! %RESET%
     
-    :: 构建请求体
+
     set "REQUEST_BODY={\"friendId\":\"!FRIEND_ID!\",\"groupName\":\"我的好友\",\"imDialogId\":0,\"type\":0,\"verification\":\"\",\"watchId\":\"!ACCOUNTID!\"}"
     
     :: 使用curl发送POST请求
@@ -139,7 +138,6 @@ for /l %%n in (1,1,!ID_COUNT!) do (
     
     echo.
     
-    :: 延时3秒
     if %%n lss !ID_COUNT! (
         echo %INFO%等待3秒...%RESET%
         timeout /t 3 /nobreak >nul

@@ -2,7 +2,8 @@
 setlocal enabledelayedexpansion
 
 :Check_prop
-for /f "delims=" %%i in ('adb wait-for-device shell "getprop sys.boot_completed" 2^>^&1') do (
+call adbdevice adb
+for /f "delims=" %%i in ('adb shell "getprop sys.boot_completed" 2^>^&1') do (
     set "completed=%%i"
     if "!completed!"=="1" goto :Check_pm
 )

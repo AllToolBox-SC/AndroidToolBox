@@ -14,35 +14,12 @@ set "max_size="
 CLS
 call logo.bat
 ECHO %ORANGE%SCRCPY投屏菜单%RESET%%YELLOW%
-ECHO ╔══════════════════════════════════════════════════════════╗
-ECHO ║ A. 返回上级菜单                                          ║
-ECHO ║ C.清除所有参数                                           ║
-ECHO ║ 1.禁用设备控制 (--no-control)                            ║
-ECHO ║ 2.启动时关闭设备屏幕 (--turn-screen-off)                 ║
-ECHO ║ 3.保持设备唤醒 (--stay-awake)                            ║
-ECHO ║ 4.录制屏幕到文件 (--record=FILE.mp4)                     ║
-ECHO ║ 5.录制时不包含音频 (--no-audio)                          ║
-ECHO ║ 6.启用音频转发 (--audio)                                 ║
-ECHO ║ 7.禁用剪贴板自动同步 (--no-clipboard-autosync)           ║
-ECHO ║ 8.使用旧版粘贴方式 (--legacy-paste)                      ║
-ECHO ║ 9.在设备上显示触摸 (--show-touches)                      ║
-ECHO ║ 10.设置最大帧率 (--max-fps=FPS)                          ║
-ECHO ║ 11.窗口置顶 (--always-on-top)                            ║
-ECHO ║ 12.全屏启动 (--fullscreen)                               ║
-ECHO ║ 13.无边框窗口 (--window-borderless)                      ║
-ECHO ║ 14.设置录制格式 (--record-format=FORMAT)                 ║
-ECHO ║ 15.设置视频比特率 (--bit-rate=RATE)                      ║
-ECHO ║ 16.裁剪屏幕区域 (--crop=W:H:X:Y)                         ║
-ECHO ║ 17.设置窗口标题 (--window-title=TEXT)                    ║
-ECHO ║ 18.设置显示最大尺寸 (--max-size=WIDTH)                   ║
-ECHO ╚══════════════════════════════════════════════════════════╝%RESET%
-
+menu.exe .\menu\scrcpy-ui.xml
+set /p MENU=<menutmp.txt
 if defined selected_params_zh (
     ECHO %CYAN%当前已选参数: !selected_params_zh!%RESET%
     echo.
 )
-
-set /p MENU=%YELLOW%请输入序号并按下回车键[不输入任何内容则启动投屏]：%RESET%
 if "%MENU%"=="A" exit /b
 if "%MENU%"=="a" exit /b
 if "%MENU%"=="C" goto CLEAR_PARAMS
@@ -65,8 +42,7 @@ if "%MENU%"=="15" goto SET_BIT_RATE
 if "%MENU%"=="16" goto SET_CROP
 if "%MENU%"=="17" goto SET_WINDOW_TITLE
 if "%MENU%"=="18" goto SET_MAX_SIZE
-device_check.exe adb & ECHO.
-powershell -Command "Start-Process cmd.exe -ArgumentList '/c call scrcpy.bat %p1% %p2% %p3% %p4% %p5% %p6% %p7% %p8% %p9% %p10% %p11% %p12% %p13% %p14% %p15% %p16% %p17% %p18%' -WindowStyle Hidden"
+if "%MENU%"=="S" device_check.exe adb & ECHO. & powershell -Command "Start-Process cmd.exe -ArgumentList '/c call scrcpy.bat %p1% %p2% %p3% %p4% %p5% %p6% %p7% %p8% %p9% %p10% %p11% %p12% %p13% %p14% %p15% %p16% %p17% %p18%' -WindowStyle Hidden"
 goto MAIN_MENU
 
 :ADD_NO_CONTROL
@@ -267,7 +243,7 @@ goto MAIN_MENU
 set "param_en=%~1"
 set "param_zh=%~2"
 
-REM 检查参数是否已存在
+
 set "exists=false"
 for %%a in (!selected_params!) do (
     if "%%a"=="!param_en!" set "exists=true"
@@ -279,21 +255,21 @@ if "!exists!"=="true" (
     goto :eof
 )
 
-REM 添加英文参数
+
 if defined selected_params (
     set "selected_params=!selected_params! !param_en!"
 ) else (
     set "selected_params=!param_en!"
 )
 
-REM 添加中文描述
+
 if defined selected_params_zh (
     set "selected_params_zh=!selected_params_zh!、!param_zh!"
 ) else (
     set "selected_params_zh=!param_zh!"
 )
 
-REM 更新参数变量 p1-p18
+
 set "param_count=0"
 for %%a in (!selected_params!) do (
     set /a param_count+=1

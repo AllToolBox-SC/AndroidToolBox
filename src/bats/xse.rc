@@ -1,0 +1,5 @@
+on post-fs-data
+    setprop persist.sys.xtc.alxcse false
+   
+on property:persist.sys.xtc.alxcse=true
+    setprop persist.sys.xtc.alxcse false       

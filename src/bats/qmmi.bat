@@ -4,23 +4,9 @@ goto %1
 CLS
 call logo
 echo %ORANGE%请选择型号[全部自带文件]%YELLOW%
-ECHO.════════════════════════════════
-ECHO.1.Z2
-ECHO.2.Z3
-ECHO.3.Z5A
-ECHO.4.Z5Q
-ECHO.5.Z5PRO
-ECHO.6.Z6
-ECHO.7.Z6巅峰版
-ECHO.8.Z7
-ECHO.9.Z7A
-ECHO.10.Z7S
-ECHO.11.Z8(或少年版)
-ECHO.12.Z8A
-ECHO.13.Z9(或少年版)
-ECHO.14.Z10(或少年版)
-ECHO.════════════════════════════════
-set /p MENU=%YELLOW%请输入序号并按下回车键：%RESET%
+menu.exe .\menu\qmmi.xml
+set /p MENU=<menutmp.txt
+if "%MENU%"=="A" exit /b
 if "%MENU%"=="1" set innermodel=I12&&goto otherpash
 if "%MENU%"=="2" set innermodel=IB&&goto otherpash
 if "%MENU%"=="3" set innermodel=I13C&&goto otherpash
@@ -41,7 +27,7 @@ goto rebootP-qmmi
 
 :v3pash
 ECHO %INFO%请接入需要刷写的9008设备%RESET%
-adb reboot edl 2>nul 1>nul
+busybox timeout 10 cmd /c adb reboot edl 2>nul 1>nul
 device_check.exe qcom_edl&&ECHO.
 ECHO %INFO%拷贝文件到临时目录%RESET%
 copy /Y .\EDL\misc\misc_%innermodel%.xml .\EDL\rooting\misc.xml
@@ -61,7 +47,7 @@ exit /b
 
 :otherpash
 ECHO %INFO%请接入需要刷写的9008设备%RESET%
-adb reboot edl 2>nul 1>nul
+busybox timeout 10 cmd /c adb reboot edl 2>nul 1>nul
 device_check.exe qcom_edl&&ECHO.
 ECHO %INFO%拷贝文件到临时目录%RESET%
 copy /Y .\EDL\%innermodel%.zip .\EDL\rooting\root.zip
@@ -83,7 +69,7 @@ exit /b
 
 :z10
 ECHO %INFO%请接入需要刷写的9008设备%RESET%
-adb reboot edl 2>nul 1>nul
+busybox timeout 10 cmd /c adb reboot edl 2>nul 1>nul
 device_check.exe qcom_edl&&ECHO.
 ECHO %INFO%拷贝文件到临时目录%RESET%
 copy /Y .\EDL\misc\misc_ND03.xml .\EDL\rooting\misc.xml

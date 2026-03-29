@@ -1,9 +1,9 @@
 CLS
 echo %INFO%请确保手表端已经开启了自动响应%RESET%
 device_check.exe adb&&ECHO.
-for /f "delims=" %%i in ('adb wait-for-device shell getprop ro.product.innermodel') do set innermodel=%%i
+for /f "delims=" %%i in ('adb shell getprop ro.product.innermodel') do set innermodel=%%i
 call einfo 您的设备innermodel为:%innermodel%
-for /f "delims=" %%i in ('adb wait-for-device shell getprop ro.build.version.release') do set androidversion=%%i
+for /f "delims=" %%i in ('adb shell getprop ro.build.version.release') do set androidversion=%%i
 call einfo 您的设备安卓版本为:%androidversion%
 if "%androidversion%"=="7.1.1" (
     call instmodule2.bat tmp\xtcpatch.zip

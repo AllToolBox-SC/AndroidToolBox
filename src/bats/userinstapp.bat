@@ -4,16 +4,8 @@ setlocal enabledelayedexpansion
 CLS
 call logo.bat
 ECHO %ORANGE%安装应用菜单%YELLOW%
-ECHO ╔══════════════════════════════════════════════════╗
-ECHO ║A.返回上级菜单                                    ║
-ECHO ║1.选择并安装单个APK文件                           ║
-ECHO ║2.选择并安装多个APK文件                           ║
-ECHO ║3.选择一个文件夹并安装其中的所有APK文件           ║
-ECHO ║4.检查adb设备连接                                 ║
-ECHO ║5.选择安装方式                                    ║
-ECHO ╚══════════════════════════════════════════════════╝
-ECHO.%RESET%
-set /p MENU=%YELLOW%请输入序号并按下回车键：%RESET%
+menu.exe .\menu\userinstapp.xml
+set /p MENU=<menutmp.txt
 if "%MENU%"=="A" (
     if exist ".\tmp\instapptmp.txt" del ".\tmp\instapptmp.txt" >nul 2>&1
     exit /b
@@ -199,15 +191,8 @@ goto MAIN_MENU
 CLS
 call logo.bat
 ECHO %ORANGE%安装应用菜单%YELLOW%
-ECHO ╔══════════════════════════════════════════════════╗
-ECHO ║A.返回上级菜单                                    ║
-ECHO ║1.install方式安装                                 ║
-ECHO ║2.data方式安装                                    ║
-ECHO ║3.调用第三方安装器安装                            ║
-ECHO ║4.install-create方式安装                          ║
-ECHO ╚══════════════════════════════════════════════════╝
-ECHO.%RESET%
-set /p MENU=%YELLOW%请输入序号并按下回车键：%RESET%
+menu.exe .\menu\userinstapp_mod.xml
+set /p MENU=<menutmp.txt
 if "%MENU%"=="A" goto MAIN_MENU
 if "%MENU%"=="a" goto MAIN_MENU
 if "%MENU%"=="1" set /p="install" <nul > instmod.txt & goto INSTALL_MOD_d

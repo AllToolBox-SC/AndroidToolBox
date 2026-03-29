@@ -3,15 +3,8 @@
 CLS
 call logo.bat
 ECHO %ORANGE%高级重启%YELLOW%
-ECHO ╔═════════════════════════════╗
-ECHO ║A.返回上级菜单               ║
-ECHO ║1.重启至系统                 ║
-ECHO ║2.重启至Bootloader/Fastboot  ║
-ECHO ║3.重启至recovery             ║
-ECHO ║4.重启至9008                 ║
-ECHO ╚═════════════════════════════╝
-ECHO.%RESET%
-set /p MENU=%YELLOW%请输入序号并按下回车键：%RESET%
+menu.exe .\menu\rebootpro.xml
+set /p MENU=<menutmp.txt
 if "%MENU%"=="A" exit /b
 if "%MENU%"=="a" exit /b
 if "%MENU%"=="1" goto rebootP-reboot
@@ -35,13 +28,9 @@ goto rebootP
 CLS
 call logo.bat
 ECHO %ORANGE%选择该如何引导?%YELLOW%
-ECHO ═════════════════════════════
-ECHO 1.高版本[z6巅峰版及以上]
-ECHO 2.低版本[z6及以下]
-ECHO 3.跳过引导
-ECHO ═════════════════════════════
-ECHO.%RESET%
-set /p mbnMENU=%YELLOW%请输入序号并按下回车键：%RESET%
+menu.exe .\menu\rebootpro_edl.xml
+set /p MENU=<menutmp.txt
+if "%mbnMENU%"=="A" goto rebootP
 if "%mbnMENU%"=="1" set whatmbn=msm8937.mbn & goto rebootP-reboot-edl-run
 if "%mbnMENU%"=="2" set whatmbn=msm8909w.mbn & goto rebootP-reboot-edl-run
 if "%mbnMENU%"=="3" goto noQS

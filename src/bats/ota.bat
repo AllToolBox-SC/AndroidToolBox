@@ -4,9 +4,9 @@ ECHO %INFO%下载OTA包请访问https://www.123865.com/s/Q5JfTd-HEbWH%RESET%
 pause
 ECHO %INFO%请选择OTA包...%RESET%& call sel file s .. [zip]
 device_check.exe adb&&ECHO.
-for /f "delims=" %%i in ('adb wait-for-device shell getprop ro.product.model') do set model=%%i
+for /f "delims=" %%i in ('adb shell getprop ro.product.model') do set model=%%i
 echo %INFO%手表型号:%model%
-for /f "delims=" %%i in ('adb wait-for-device shell getprop ro.product.current.softversion') do set version=%%i
+for /f "delims=" %%i in ('adb shell getprop ro.product.current.softversion') do set version=%%i
 echo %INFO%版本号:%version%
 call isv3
 if "%isv3%"=="1" (

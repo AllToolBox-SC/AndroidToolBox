@@ -1,7 +1,8 @@
 @echo off
-:roottmp
-CLS
-if exist .\roottmp.txt goto rootspcd
+:: :roottmp
+:: CLS
+:: if exist .\roottmp.txt goto rootspcd
+call .\color.bat
 del /Q /F .\nouserdata.txt >nul 2>nul
 if "%1"=="" goto ROOT
 set /p="1" <nul > nouserdata.txt
@@ -13,46 +14,43 @@ CLS
 echo %YELLOW%¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T%RESET%
 echo %GREEN_2%Ò»¼ü%ORANGE%ROOT%RESET%
 echo %YELLOW%¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T%RESET%
-echo %WARN%±¾¹¦ÄÜÊÇeasyrootÖØÖÆ°æ%RESET%
-echo %WARN%²¿·ÖrootÎÄ¼şÀ´×Ôsky-imoo%RESET%
-echo %GREEN_2%±¾¹¤¾ßÖ§³ÖĞ¡Ìì²ÅQ1y,Q1S,Q2,Z1,Z1S,Z2,Z3,Z5q,Z5A,Z5Pro,Z6,Z6_DFB,Z7,Z7A,Z7S,Z8,Z8A,Z9,Z9+1ÊÖ±íroot%RESET%
-echo %GREEN_2%z11ÊÖ±í²»»áÔÚ´Ë¹¦ÄÜ¸üĞÂ,¿ÉÄÜ»áÒÔÀ©Õ¹°üµÄĞÎÊ½ÖÆ×÷%RESET%
+echo %GREEN_2%±¾¹¤¾ßÖ§³ÖXTC Q1y,Q1S,Q2,Z1,Z1S,Z2,Z3,Z5q,Z5A,Z5Pro,Z6,Z6_DFB,Z7,Z7A,Z7S,Z8,Z8A,Z9,Z9+1ÊÖ±íroot%RESET%
 echo %INFO%±¾¹¦ÄÜ¿ÉÒÔÍêÈ«ÀëÏßÔËĞĞ%RESET%
 pause
 echo %ORANGE%ÃâÔğÉùÃ÷£º  
-echo %WARN%ÔÚÊ¹ÓÃ±¾¹¤¾ß¶ÔĞ¡Ìì²Åµç»°ÊÖ±íÏµÁĞ½øĞĞROOT¡¢Ë¢»ú¡¢½â³ı°²×°ÏŞÖÆ¡¢°²×°·Ç¹Ù·½Ó¦ÓÃµÈ²Ù×÷[Í³³Æ"Ë¢»ú"]Ç°£¬Äú±ØĞë×ĞÏ¸ÔÄ¶Á²¢ÍêÈ«Àí½â±¾ÉùÃ÷¡£Ò»µ©ÄúÊµÊ©»òÍê³ÉË¢»úĞĞÎª£¬¼´ÊÓÎªÄúÒÑ³ä·ÖÖªÏş¡¢Í¬Òâ²¢×ÔÔ¸³Ğµ£±¾ÉùÃ÷ËùÊöµÄÈ«²¿·çÏÕ¼°ÔğÈÎ¡£  
-echo %WARN%±¾¹¤¾ß½ö¹©Ñ§Ï°£¬½»Á÷Ê¹ÓÃ£¬²¢·Ç"ÆÆ½â"Ğ¡Ìì²Åµç»°ÊÖ±íÏµÁĞ²úÆ·¡£ÑÏ½ûÓÃÓÚÈÎºÎĞÎÊ½·Ç·¨ÓÃÍ¾¡£
+echo %WARN%ÔÚÊ¹ÓÃ±¾¹¤¾ß¶ÔXTCµç»°ÊÖ±íÏµÁĞ½øĞĞROOT¡¢Ë¢»ú¡¢½â³ı°²×°ÏŞÖÆ¡¢°²×°·Ç¹Ù·½Ó¦ÓÃµÈ²Ù×÷[Í³³Æ"Ë¢»ú"]Ç°£¬Äú±ØĞë×ĞÏ¸ÔÄ¶Á²¢ÍêÈ«Àí½â±¾ÉùÃ÷¡£Ò»µ©ÄúÊµÊ©»òÍê³ÉË¢»úĞĞÎª£¬¼´ÊÓÎªÄúÒÑ³ä·ÖÖªÏş¡¢Í¬Òâ²¢×ÔÔ¸³Ğµ£±¾ÉùÃ÷ËùÊöµÄÈ«²¿·çÏÕ¼°ÔğÈÎ¡£  
+echo %WARN%±¾¹¤¾ß½ö¹©Ñ§Ï°£¬½»Á÷Ê¹ÓÃ£¬²¢·Ç"ÆÆ½â"XTCµç»°ÊÖ±íÏµÁĞ²úÆ·¡£ÑÏ½ûÓÃÓÚÈÎºÎĞÎÊ½·Ç·¨ÓÃÍ¾¡£
 echo %WARN%±¾¹¤¾ß²»ÄÜÓÃÓÚ½â°óÊÖ±í£¬ÈçÄúÍ¨¹ı²»Õıµ±ÊÖ¶Î»ñÈ¡µÄÊÖ±íÇëÁªÏµ¹«°²»ú¹Ø¹é»¹ÊÖ±í£¡
 echo.
 echo %WARN%1. Éè±¸¹¦ÄÜÓë·şÎñÊ§Ğ§·çÏÕ  
 echo %WARN%Ë¢»úºóÄúµÄÉè±¸½«ÍÑÀë¹Ù·½Ô­³§¹Ì¼ş£¬¿ÉÄÜµ¼ÖÂÒÔÏÂºó¹û£º  
-echo %WARN%1.1 ÎŞ·¨Ê¹ÓÃ¹ã¶«Ğ¡Ìì²Å¿Æ¼¼ÓĞÏŞ¹«Ë¾£¨ÒÔÏÂ¼ò³Æ¡°Ğ¡Ìì²Å¡±£©Ìá¹©µÄ¸÷Ïî¹Ù·½·şÎñ£¬°üÀ¨µ«²»ÏŞÓÚÏµÍ³¸üĞÂ¡¢Ó¦ÓÃÉÌµê¡¢¼Ò³¤¶Ë¹ÜÀí¡¢¶¨Î»¡¢Í¨»°¡¢Ö§¸¶¡¢°²È«¹¦ÄÜ¼°ÔÆ·şÎñµÈ£»  
+echo %WARN%1.1 ÎŞ·¨Ê¹ÓÃ¹ã¶«XTC¿Æ¼¼ÓĞÏŞ¹«Ë¾£¨ÒÔÏÂ¼ò³Æ¡°XTC¡±£©Ìá¹©µÄ¸÷Ïî¹Ù·½·şÎñ£¬°üÀ¨µ«²»ÏŞÓÚÏµÍ³¸üĞÂ¡¢Ó¦ÓÃÉÌµê¡¢¼Ò³¤¶Ë¹ÜÀí¡¢¶¨Î»¡¢Í¨»°¡¢Ö§¸¶¡¢°²È«¹¦ÄÜ¼°ÔÆ·şÎñµÈ£»  
 echo %WARN%1.2 Éè±¸¿ÉÄÜ³öÏÖÏµÍ³²»ÎÈ¶¨¡¢¹¦ÄÜÒì³£¡¢ĞÔÄÜÏÂ½µ¡¢¼æÈİĞÔÎÊÌâ¡¢Êı¾İ¶ªÊ§»òÓ²¼şËğ»µµÈ·çÏÕ£»  
-echo %WARN%1.3 Éè±¸×Ô½øÈë9008Ä£Ê½Æğ¼´¿ÌÉ¥Ê§¹Ù·½±£ĞŞ×Ê¸ñ£¬Ğ¡Ìì²ÅÎŞÒåÎñ»Ö¸´ÒòË¢»úĞĞÎªËùµ¼ÖÂµÄÈÎºÎ¹¦ÄÜ»ò·şÎñËğÊ§¡£
+echo %WARN%1.3 Éè±¸×Ô½øÈë9008Ä£Ê½Æğ¼´¿ÌÉ¥Ê§¹Ù·½±£ĞŞ×Ê¸ñ£¬XTCÎŞÒåÎñ»Ö¸´ÒòË¢»úĞĞÎªËùµ¼ÖÂµÄÈÎºÎ¹¦ÄÜ»ò·şÎñËğÊ§¡£
 echo %WARN%2. Ïà¹ØÓÃ»§Ğ­ÒéÌõ¿îÔ®Òı  
-echo %WARN%¸ù¾İĞ¡Ìì²Å¡¶ÓÃ»§Ğ­Òé¡·£¨ÓÃ»§ÓÚÊÖ±í¿ª»úÊ±µã»÷È·ÈÏ°´Å¥¼´ÊÓÎªÍ¬Òâ£©µÄÔ¼¶¨£¬ÒÔÏÂĞĞÎªÊôÓÚÃ÷È·½ûÖ¹µÄ·¶³ë£¬ÓÃ»§ĞëÑÏ¸ñ×ñÊØ£º
+echo %WARN%¸ù¾İXTC¡¶ÓÃ»§Ğ­Òé¡·£¨ÓÃ»§ÓÚÊÖ±í¿ª»úÊ±µã»÷È·ÈÏ°´Å¥¼´ÊÓÎªÍ¬Òâ£©µÄÔ¼¶¨£¬ÒÔÏÂĞĞÎªÊôÓÚÃ÷È·½ûÖ¹µÄ·¶³ë£¬ÓÃ»§ĞëÑÏ¸ñ×ñÊØ£º
 echo %WARN%¡¾½ûÖ¹ĞĞÎª¡¿  
-echo %WARN%Äú¿ÉÔÚ±¾Ğ­ÒéÔ¼¶¨µÄ·¶Î§ÄÚÊ¹ÓÃĞ¡Ìì²Å²úÆ·ºÍ·şÎñ£¬²»µÃ´ÓÊÂ°üÀ¨µ«²»ÏŞÓÚÒÔÏÂĞĞÎª£º
+echo %WARN%Äú¿ÉÔÚ±¾Ğ­ÒéÔ¼¶¨µÄ·¶Î§ÄÚÊ¹ÓÃXTC²úÆ·ºÍ·şÎñ£¬²»µÃ´ÓÊÂ°üÀ¨µ«²»ÏŞÓÚÒÔÏÂĞĞÎª£º
 echo.
-echo %WARN%£¨1£©¸´ÖÆ¡¢±ä¸ü¡¢·´Ïò¹¤³Ì¡¢·´»ã±à¡¢·´±àÒë¡¢²ğ×°¡¢ÆóÍ¼µ¼³öÆäÔ´´úÂë¡¢½âÂë¡¢ÆäËû¶ÔĞŞ¸ÄĞ¡Ìì²Å²úÆ·ºÍ·şÎñµÄÔ´´úÂë¡¢¹¹Ôì¡¢¹¹Ë¼µÈ½øĞĞ½âÎö»òÕß¸´ÖÆµÄĞĞÎª£»  
-echo %WARN%£¨2£©É¾³ıĞ¡Ìì²Å²úÆ·ºÍ·şÎñÉÏ¹ØÓÚÖø×÷È¨µÄĞÅÏ¢£»  
-echo %WARN%£¨3£©¶ÔĞ¡Ìì²Å²úÆ·ºÍ·şÎñÓµÓĞÖªÊ¶²úÈ¨µÄÄÚÈİ½øĞĞÊ¹ÓÃ¡¢³ö×â¡¢³ö½è¡¢¸´ÖÆ¡¢ĞŞ¸Ä¡¢Á´½Ó¡¢×ªÔØ¡¢»ã±à¡¢·¢±í¡¢³ö°æ¡¢½¨Á¢¾µÏñÕ¾µã¡¢Â¼ÆÁ¡¢¼ô½ÓµÈ£»  
-echo %WARN%£¨4£©ÔùÓë¡¢½èÓÃ¡¢×âÓÃ¡¢×ªÈÃ¡¢ÊÛÂô¡¢ÔÙ·Ö·¢¡¢ÆäËûÔÙĞí¿ÉĞ¡Ìì²Å²úÆ·ºÍ·şÎñÈí¼şµÄÏà¹ØĞĞÎª£»  
-echo %WARN%£¨5£©ÀûÓÃĞ¡Ìì²Å²úÆ·ºÍ·şÎñ·¢±í¡¢´«ËÍ¡¢´«²¥¡¢´¢´æÎ£º¦¹ú¼Ò°²È«¡¢¹ú¼ÒÍ³Ò»¡¢Éç»áÎÈ¶¨µÄÄÚÈİ£¬»òÎêÈè·Ì°ù¡¢É«Çé¡¢±©Á¦¡¢ÒıÆğËûÈË²»°²¼°ÈÎºÎÎ¥·´¹ú¼Ò·¨ÂÉ·¨¹æÕş²ßµÄÄÚÈİ»òÕßÉèÖÃº¬ÓĞÉÏÊöÄÚÈİµÄÍøÃû¡¢½ÇÉ«Ãû£¬·¢²¼¡¢´«ËÍ¡¢´«²¥º¬ÓĞÉÏÊöÄÚÈİµÄ¹ã¸æĞÅÏ¢¡¢ÓªÏúĞÅÏ¢¼°À¬»øĞÅÏ¢µÈµÄĞĞÎª£»  
-echo %WARN%£¨6£©ÀûÓÃĞ¡Ìì²Å²úÆ·ºÍ·şÎñÇÖº¦ËûÈËÖªÊ¶²úÈ¨¡¢Ğ¤ÏñÈ¨¡¢ÒşË½È¨¡¢ÃûÓşÈ¨µÈºÏ·¨È¨Àû»òÈ¨ÒæµÄĞĞÎª£»  
+echo %WARN%£¨1£©¸´ÖÆ¡¢±ä¸ü¡¢·´Ïò¹¤³Ì¡¢·´»ã±à¡¢·´±àÒë¡¢²ğ×°¡¢ÆóÍ¼µ¼³öÆäÔ´´úÂë¡¢½âÂë¡¢ÆäËû¶ÔĞŞ¸ÄXTC²úÆ·ºÍ·şÎñµÄÔ´´úÂë¡¢¹¹Ôì¡¢¹¹Ë¼µÈ½øĞĞ½âÎö»òÕß¸´ÖÆµÄĞĞÎª£»  
+echo %WARN%£¨2£©É¾³ıXTC²úÆ·ºÍ·şÎñÉÏ¹ØÓÚÖø×÷È¨µÄĞÅÏ¢£»  
+echo %WARN%£¨3£©¶ÔXTC²úÆ·ºÍ·şÎñÓµÓĞÖªÊ¶²úÈ¨µÄÄÚÈİ½øĞĞÊ¹ÓÃ¡¢³ö×â¡¢³ö½è¡¢¸´ÖÆ¡¢ĞŞ¸Ä¡¢Á´½Ó¡¢×ªÔØ¡¢»ã±à¡¢·¢±í¡¢³ö°æ¡¢½¨Á¢¾µÏñÕ¾µã¡¢Â¼ÆÁ¡¢¼ô½ÓµÈ£»  
+echo %WARN%£¨4£©ÔùÓë¡¢½èÓÃ¡¢×âÓÃ¡¢×ªÈÃ¡¢ÊÛÂô¡¢ÔÙ·Ö·¢¡¢ÆäËûÔÙĞí¿ÉXTC²úÆ·ºÍ·şÎñÈí¼şµÄÏà¹ØĞĞÎª£»  
+echo %WARN%£¨5£©ÀûÓÃXTC²úÆ·ºÍ·şÎñ·¢±í¡¢´«ËÍ¡¢´«²¥¡¢´¢´æÎ£º¦¹ú¼Ò°²È«¡¢¹ú¼ÒÍ³Ò»¡¢Éç»áÎÈ¶¨µÄÄÚÈİ£¬»òÎêÈè·Ì°ù¡¢É«Çé¡¢±©Á¦¡¢ÒıÆğËûÈË²»°²¼°ÈÎºÎÎ¥·´¹ú¼Ò·¨ÂÉ·¨¹æÕş²ßµÄÄÚÈİ»òÕßÉèÖÃº¬ÓĞÉÏÊöÄÚÈİµÄÍøÃû¡¢½ÇÉ«Ãû£¬·¢²¼¡¢´«ËÍ¡¢´«²¥º¬ÓĞÉÏÊöÄÚÈİµÄ¹ã¸æĞÅÏ¢¡¢ÓªÏúĞÅÏ¢¼°À¬»øĞÅÏ¢µÈµÄĞĞÎª£»  
+echo %WARN%£¨6£©ÀûÓÃXTC²úÆ·ºÍ·şÎñÇÖº¦ËûÈËÖªÊ¶²úÈ¨¡¢Ğ¤ÏñÈ¨¡¢ÒşË½È¨¡¢ÃûÓşÈ¨µÈºÏ·¨È¨Àû»òÈ¨ÒæµÄĞĞÎª£»  
 echo %WARN%£¨7£©¶ñÒâĞé¹¹ÊÂÊµ¡¢ÒşÂ÷ÕæÏàÒÔÎóµ¼¡¢ÆÛÕ©ËûÈËµÄĞĞÎª£»  
-echo %WARN%£¨8£©½øĞĞÈÎºÎÎ£º¦¼ÆËã»úÍøÂç°²È«µÄĞĞÎª£¬°üÀ¨µ«²»ÏŞÓÚ£º½øÈëÎ´¾­Ğí¿É·ÃÎÊµÄ·şÎñÆ÷/ÕËºÅ/Ó²¼şÏµÍ³´æ´¢Æ÷»òÆäËûĞ¡Ìì²ÅºÍĞ¡Ìì²ÅÓÃ»§´æ´¢Êı¾İµÄÈíÓ²¼ş£»Ã»ÓĞ·ÃÎÊÈ¨ÏŞ¶øÎ´¾­ÔÊĞí½øÈëĞ¡Ìì²ÅºÍĞ¡Ìì²ÅÓÃ»§µÄ¼ÆËã»úÍøÂç¡¢¼ÆËã»úÏµÍ³ºÍ´æ´¢Êı¾İµÄÏµÍ³´æ´¢Æ÷µÈÈíÓ²¼şÉèÊ©£»Î´¾­Ğí¿É²éÑ¯¡¢É¾³ı¡¢ĞŞ¸Ä¡¢Ôö¼Ó´æ´¢¡¢ÏÂÔØ¡¢Ê¹ÓÃĞ¡Ìì²Å·şÎñÆ÷»òÓÃ»§ÈíÓ²¼şÉè±¸ÉÏµÄÊı¾İ£»Î´¾­Ğí¿É£¬ÆóÍ¼Ì½²é¡¢É¨Ãè¡¢²âÊÔĞ¡Ìì²Å²úÆ·ºÍ·şÎñ»òÍøÂçµÄÈõµã»òÆäËüÊµÊ©ÆÆ»µÍøÂç°²È«µÄĞĞÎª£»ÆóÍ¼¸ÉÉæ¡¢ÆÆ»µĞ¡Ìì²Å²úÆ·ºÍ·şÎñ»òÍøÂçµÄÕı³£ÔËĞĞ£¬¹ÊÒâ´«²¥¶ñÒâ³ÌĞò»ò²¡¶¾ÒÔ¼°ÆäËûÆÆ»µ¸ÉÈÅÕı³£ÍøÂçĞÅÏ¢·şÎñµÄĞĞÎª£»Î±ÔìTCP/IPÊı¾İ°üÃû³Æ»ò²¿·ÖÃû³Æ£»ÀûÓÃÎ±ÔìµÄIPµØÖ··ÃÎÊĞ¡Ìì²Å·şÎñÆ÷µÈ£»  
-echo %WARN%£¨9£©½øĞĞÈÎºÎÆÆ»µĞ¡Ìì²ÅÌá¹©·şÎñ¹«Æ½ĞÔ»òÕßÆäËûÓ°ÏìÓ¦ÓÃÕı³£ÔËĞĞÖÈĞòµÄĞĞÎª£¬ÈçÖ÷¶¯»ò±»¶¯Ë¢»ı·Ö£¬Ê¹ÓÃÍâ¹Ò»òÕßÆäËûµÄ·Ç·¨Èí¼ş¡¢ÀûÓÃBUG£¨ÓÖ½Ğ¡°Â©¶´¡±»òÕß¡°È±Ïİ¡±£©À´´ÓĞ¡Ìì²Å²úÆ·ºÍ·şÎñÖĞ»ñµÃ²»Õıµ±µÄÀûÒæ£¬»òÕßÀûÓÃ»¥ÁªÍø»òÆäËû·½Ê½½«Íâ¹Ò¡¢·Ç·¨Èí¼şÌá¹©¸øËûÈË»ò¹«Ö®ÓÚÖÚµÈĞĞÎª£»  
-echo %WARN%£¨10£©½øĞĞÈÎºÎÖîÈç·¢²¼¹ã¸æ¡¢ÏúÊÛÉÌÆ·µÄÉÌÒµĞĞÎª£¬»òÕß½øĞĞÈÎºÎ·Ç·¨µÄÇÖº¦Ğ¡Ìì²ÅÀûÒæµÄĞĞÎª£»  
+echo %WARN%£¨8£©½øĞĞÈÎºÎÎ£º¦¼ÆËã»úÍøÂç°²È«µÄĞĞÎª£¬°üÀ¨µ«²»ÏŞÓÚ£º½øÈëÎ´¾­Ğí¿É·ÃÎÊµÄ·şÎñÆ÷/ÕËºÅ/Ó²¼şÏµÍ³´æ´¢Æ÷»òÆäËûXTCºÍXTCÓÃ»§´æ´¢Êı¾İµÄÈíÓ²¼ş£»Ã»ÓĞ·ÃÎÊÈ¨ÏŞ¶øÎ´¾­ÔÊĞí½øÈëXTCºÍXTCÓÃ»§µÄ¼ÆËã»úÍøÂç¡¢¼ÆËã»úÏµÍ³ºÍ´æ´¢Êı¾İµÄÏµÍ³´æ´¢Æ÷µÈÈíÓ²¼şÉèÊ©£»Î´¾­Ğí¿É²éÑ¯¡¢É¾³ı¡¢ĞŞ¸Ä¡¢Ôö¼Ó´æ´¢¡¢ÏÂÔØ¡¢Ê¹ÓÃXTC·şÎñÆ÷»òÓÃ»§ÈíÓ²¼şÉè±¸ÉÏµÄÊı¾İ£»Î´¾­Ğí¿É£¬ÆóÍ¼Ì½²é¡¢É¨Ãè¡¢²âÊÔXTC²úÆ·ºÍ·şÎñ»òÍøÂçµÄÈõµã»òÆäËüÊµÊ©ÆÆ»µÍøÂç°²È«µÄĞĞÎª£»ÆóÍ¼¸ÉÉæ¡¢ÆÆ»µXTC²úÆ·ºÍ·şÎñ»òÍøÂçµÄÕı³£ÔËĞĞ£¬¹ÊÒâ´«²¥¶ñÒâ³ÌĞò»ò²¡¶¾ÒÔ¼°ÆäËûÆÆ»µ¸ÉÈÅÕı³£ÍøÂçĞÅÏ¢·şÎñµÄĞĞÎª£»Î±ÔìTCP/IPÊı¾İ°üÃû³Æ»ò²¿·ÖÃû³Æ£»ÀûÓÃÎ±ÔìµÄIPµØÖ··ÃÎÊXTC·şÎñÆ÷µÈ£»  
+echo %WARN%£¨9£©½øĞĞÈÎºÎÆÆ»µXTCÌá¹©·şÎñ¹«Æ½ĞÔ»òÕßÆäËûÓ°ÏìÓ¦ÓÃÕı³£ÔËĞĞÖÈĞòµÄĞĞÎª£¬ÈçÖ÷¶¯»ò±»¶¯Ë¢»ı·Ö£¬Ê¹ÓÃÍâ¹Ò»òÕßÆäËûµÄ·Ç·¨Èí¼ş¡¢ÀûÓÃBUG£¨ÓÖ½Ğ¡°Â©¶´¡±»òÕß¡°È±Ïİ¡±£©À´´ÓXTC²úÆ·ºÍ·şÎñÖĞ»ñµÃ²»Õıµ±µÄÀûÒæ£¬»òÕßÀûÓÃ»¥ÁªÍø»òÆäËû·½Ê½½«Íâ¹Ò¡¢·Ç·¨Èí¼şÌá¹©¸øËûÈË»ò¹«Ö®ÓÚÖÚµÈĞĞÎª£»  
+echo %WARN%£¨10£©½øĞĞÈÎºÎÖîÈç·¢²¼¹ã¸æ¡¢ÏúÊÛÉÌÆ·µÄÉÌÒµĞĞÎª£¬»òÕß½øĞĞÈÎºÎ·Ç·¨µÄÇÖº¦XTCÀûÒæµÄĞĞÎª£»  
 echo %WARN%£¨11£©´ÓÊÂÆäËû·¨ÂÉ·¨¹æ¡¢Õş²ß¼°¹«ĞòÁ¼Ë×¡¢Éç»á¹«µÂ½ûÖ¹µÄĞĞÎªÒÔ¼°ÇÖ·¸ÆäËû¸öÈË¡¢¹«Ë¾¡¢Éç»áÍÅÌå¡¢×éÖ¯µÄºÏ·¨È¨ÒæµÄĞĞÎª¡£
 echo.
 echo %WARN%¡¾ĞĞÎªÏŞÖÆ¡¿  
-echo %WARN%ÈçÄúÎ¥·´±¾Ğ­ÒéÔ¼¶¨£¬Ğ¡Ìì²ÅÓĞÈ¨ÒÀÕÕÒµÎñ¹æÔò¼°ÄúµÄĞĞÎªĞÔÖÊ£¬²ÉÈ¡°üÀ¨µ«²»ÏŞÓÚÉ¾³ıÄú·¢²¼µÄĞÅÏ¢ÄÚÈİ¡¢ÔİÍ£ÕËºÅÊ¹ÓÃ¡¢ÖÕÖ¹·şÎñ¡¢ÏŞÖÆÊ¹ÓÃ¡¢»ØÊÕĞ¡Ìì²ÅÕËºÅ¡¢×·¾¿·¨ÂÉÔğÈÎµÈ´ëÊ©¡£¶Ô¶ñÒâ×¢²áĞ¡Ìì²ÅÕËºÅ»òÀûÓÃĞ¡Ìì²ÅÕËºÅ½øĞĞÎ¥·¨»î¶¯¡¢µ·ÂÒ¡¢É§ÈÅ¡¢ÆÛÆ­ÆäËûÓÃ»§ÒÔ¼°ÆäËûÎ¥·´±¾Ğ­ÒéµÄĞĞÎª£¬Ğ¡Ìì²ÅÓĞÈ¨»ØÊÕÆäÕËºÅ¡£ÒÔÉÏºó¹û¿ÉÄÜ¶ÔÄúÔì³ÉËğÊ§£¬¸ÃËğÊ§Ó¦ÓÉÄú×ÔĞĞ³Ğµ££¬Ğ¡Ìì²Å²»³Ğµ£ÈÎºÎÔğÈÎ¡£Ğ¡Ìì²ÅÓĞÈ¨¶Ô²¿·ÖÎ¥¹æĞĞÎª½øĞĞÏŞÖÆ¡£
+echo %WARN%ÈçÄúÎ¥·´±¾Ğ­ÒéÔ¼¶¨£¬XTCÓĞÈ¨ÒÀÕÕÒµÎñ¹æÔò¼°ÄúµÄĞĞÎªĞÔÖÊ£¬²ÉÈ¡°üÀ¨µ«²»ÏŞÓÚÉ¾³ıÄú·¢²¼µÄĞÅÏ¢ÄÚÈİ¡¢ÔİÍ£ÕËºÅÊ¹ÓÃ¡¢ÖÕÖ¹·şÎñ¡¢ÏŞÖÆÊ¹ÓÃ¡¢»ØÊÕXTCÕËºÅ¡¢×·¾¿·¨ÂÉÔğÈÎµÈ´ëÊ©¡£¶Ô¶ñÒâ×¢²áXTCÕËºÅ»òÀûÓÃXTCÕËºÅ½øĞĞÎ¥·¨»î¶¯¡¢µ·ÂÒ¡¢É§ÈÅ¡¢ÆÛÆ­ÆäËûÓÃ»§ÒÔ¼°ÆäËûÎ¥·´±¾Ğ­ÒéµÄĞĞÎª£¬XTCÓĞÈ¨»ØÊÕÆäÕËºÅ¡£ÒÔÉÏºó¹û¿ÉÄÜ¶ÔÄúÔì³ÉËğÊ§£¬¸ÃËğÊ§Ó¦ÓÉÄú×ÔĞĞ³Ğµ££¬XTC²»³Ğµ£ÈÎºÎÔğÈÎ¡£XTCÓĞÈ¨¶Ô²¿·ÖÎ¥¹æĞĞÎª½øĞĞÏŞÖÆ¡£
 echo %WARN%2. ¹¦ÄÜÒì³£ÓëÊı¾İ°²È«  
 echo %WARN%Ë¢»ú¿ÉÄÜµ¼ÖÂ¼Ò³¤¶Ë¹¦ÄÜÒì³£¡¢Éè±¸¹¦ÄÜÊ§Ğ§¡¢Êı¾İ´íÎó»ò¶ªÊ§¡£ÎÒÃÇ¶Ô´Ë²»³Ğµ£ÔğÈÎ¡£ÄúĞè×ÔĞĞÍê³ÉÊı¾İ±¸·İ²¢³Ğµ£È«²¿ºó¹û¡£  
 echo.
 echo %WARN%3. Ê¹ÓÃĞĞÎªÓë¼à»¤ÈËÔğÈÎ  
-echo %WARN%Éè±¸¾­ĞŞ¸Äºó¿ÉÄÜ¾ß±¸°²×°·Ç¹Ù·½Ó¦ÓÃ»òÔöÇ¿ÍøÂç·ÃÎÊµÄÄÜÁ¦£¬ÄúĞëºÏ·¨ºÏ¹æÊ¹ÓÃ¡£ÈôÒò³ÁÃÔÍøÂç¡¢²»µ±Ê¹ÓÃÓ¦ÓÃ¡¢½Ó´¥²»Á¼ĞÅÏ¢µ¼ÖÂÉíĞÄ½¡¿µÊÜËğ¡¢²Æ²úËğÊ§»òÆäËûºó¹û£¬ÎÒÃÇ²»³Ğµ£ÈÎºÎÔğÈÎ¡£ÈôÉè±¸Ê¹ÓÃÕßÎªÎ´³ÉÄêÈË£¬Æä¼à»¤ÈËĞë³Ğµ£ÍêÈ«µÄ¼à¶½Óë¹ÜÀíÒåÎñ¡£ÄúÓ¦ÔÚË¢»úºó48Ğ¡Ê±ÄÚ»Ö¸´Ğ¡Ìì²Å¹Ù·½ÏµÍ³¡£  
+echo %WARN%Éè±¸¾­ĞŞ¸Äºó¿ÉÄÜ¾ß±¸°²×°·Ç¹Ù·½Ó¦ÓÃ»òÔöÇ¿ÍøÂç·ÃÎÊµÄÄÜÁ¦£¬ÄúĞëºÏ·¨ºÏ¹æÊ¹ÓÃ¡£ÈôÒò³ÁÃÔÍøÂç¡¢²»µ±Ê¹ÓÃÓ¦ÓÃ¡¢½Ó´¥²»Á¼ĞÅÏ¢µ¼ÖÂÉíĞÄ½¡¿µÊÜËğ¡¢²Æ²úËğÊ§»òÆäËûºó¹û£¬ÎÒÃÇ²»³Ğµ£ÈÎºÎÔğÈÎ¡£ÈôÉè±¸Ê¹ÓÃÕßÎªÎ´³ÉÄêÈË£¬Æä¼à»¤ÈËĞë³Ğµ£ÍêÈ«µÄ¼à¶½Óë¹ÜÀíÒåÎñ¡£ÄúÓ¦ÔÚË¢»úºó48Ğ¡Ê±ÄÚ»Ö¸´XTC¹Ù·½ÏµÍ³¡£  
 echo.
 echo %WARN%4. ²Ù×÷×ÔÔ¸ĞÔ  
 echo %WARN%Ë¢»úÊôÓÚÄú¸öÈË×ÔÔ¸ĞĞÎª¡£ÎÒÃÇ½öÌá¹©¼¼ÊõĞÅÏ¢ÓëÎÄ¼ş×ÊÔ´£¬´ÓÎ´Ö÷¶¯ÒªÇó¡¢ÓÕµ¼»òÇ¿ÖÆÓÃ»§½øĞĞÈÎºÎË¢»ú²Ù×÷¡£ÄúĞë¶Ô×ÔÉí²Ù×÷¼°ºó¹û¸ºÈ«²¿ÔğÈÎ¡£  
@@ -77,7 +75,7 @@ echo %WARN%8.4 Î´ÊÚÈ¨²Ù×÷ËûÈËÕËºÅ¡£
 echo %WARN%ÒòÉÏÊöĞĞÎªµ¼ÖÂËûÈË²Æ²úËğÊ§¡¢ÒşË½Ğ¹Â¶µÈºó¹û£¬ĞĞÎªÈËĞë³Ğµ£È«²¿·¨ÂÉÔğÈÎ¼°Åâ³¥¡£ÎÒÃÇ±£Áô×·¾¿Æä·¨ÂÉÔğÈÎµÄÈ¨Àû¡£  
 echo.
 echo %WARN%9. ÒşË½±£»¤½ûÁî  
-echo %WARN%»ñÈ¡Ğ¡Ìì²ÅÓÃ»§ĞÅÏ¢ÊôÎ¥·¨ĞĞÎª£¬ÇëÁ¢¼´Ğ¶ÔØ·Ç·¨×¥°ü¹¤¾ß£¨ÈçHttpCanary£©¡£ÎÒÃÇÑÏ½ûÈÎºÎÇÖ·¸ÒşË½ĞĞÎª£¬Î¥Õß½«ÒÀ·¨³Ğµ£·¨ÂÉÔğÈÎ¡£  
+echo %WARN%»ñÈ¡XTCÓÃ»§ĞÅÏ¢ÊôÎ¥·¨ĞĞÎª£¬ÇëÁ¢¼´Ğ¶ÔØ·Ç·¨×¥°ü¹¤¾ß£¨ÈçHttpCanary£©¡£ÎÒÃÇÑÏ½ûÈÎºÎÇÖ·¸ÒşË½ĞĞÎª£¬Î¥Õß½«ÒÀ·¨³Ğµ£·¨ÂÉÔğÈÎ¡£  
 echo.
 ECHO %INFO%ÇëÔÚÔÄ¶ÁÍê±Ï¡¶ÃâÔğÉùÃ÷¡·£¬²¢Í¬Òâ×ÔĞĞ³Ğµ£Ò»ÇĞºó¹ûºó°´ÈÎÒâ¼ü¼ÌĞø%RESET%
 pause >nul
@@ -92,15 +90,38 @@ echo %YELLOW%¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨
 device_check.exe adb qcom_edl&&ECHO.
 busybox sleep 2
 for /f "delims=" %%i in ('type tmp.txt') do set devicestatus=%%i
-if "%devicestatus%"=="qcom_edl" (
-call nd03root.bat
-if "!innermodel!"=="ND03" exit /b
+if not "%devicestatus%"=="qcom_edl" goto adb_run
+:EDL_run
+CLS
+call logo
+echo %ORANGE%ÇëÑ¡ÔñĞèÒªrootµÄĞÍºÅ%YELLOW%
+menu.exe .\menu\root.xml
+set /p MENU=<menutmp.txt
+if "%MENU%"=="1" set innermodel=I12&&call qmmi otherpash
+if "%MENU%"=="2" set innermodel=IB&&call qmmi otherpash
+if "%MENU%"=="3" set innermodel=I13C&&call qmmi otherpash
+if "%MENU%"=="4" set innermodel=I13&&call qmmi otherpash
+if "%MENU%"=="5" set innermodel=I19&&call qmmi otherpash
+if "%MENU%"=="6" set innermodel=I18&&call qmmi otherpash
+if "%MENU%"=="7" set innermodel=I20&&call qmmi v3pash
+if "%MENU%"=="8" set innermodel=I25&&call qmmi v3pash
+if "%MENU%"=="9" set innermodel=I25C&&call qmmi v3pash
+if "%MENU%"=="10" set innermodel=I25D&&call qmmi v3pash
+if "%MENU%"=="11" set innermodel=I32&&call qmmi v3pash
+if "%MENU%"=="12" set innermodel=ND07&&call qmmi v3pash
+if "%MENU%"=="13" set innermodel=ND01&&call qmmi v3pash
+if "%MENU%"=="14" set innermodel=ND03&&echo.%info%ÄãÑ¡ÔñÁËND03£¬¼´½«ÎªÄã¿ªÊ¼root&&call nd03root&&exit /b
+ECHO %ERROR%ÊäÈë´íÎó£¬ÇëÖØĞÂÊäÈë£¡%RESET%
+timeout /t 2 >nul
+goto EDL_run
+:adb_run
 echo %INFO%µÈ´ıadbÁ¬½Ó...
-)
-call morodevice.bat
-for /f "delims=" %%i in ('adb wait-for-device shell getprop ro.product.innermodel') do set innermodel=%%i
+device_check.exe adb&&ECHO.
+call adbdevice.bat more
+for /f "delims=" %%i in ('adb shell getprop ro.product.innermodel') do set innermodel=%%i
 echo %INFO%ÄúµÄÉè±¸innermodelÎª:%innermodel%
 del /Q /F .\smodel.txt >nul 2>nul
+del /Q /F .\innermodel.txt >nul 2>nul
 set /p="%innermodel%" <nul > innermodel.txt
 if "%innermodel%"=="I25C" (
    set smodel=1
@@ -109,19 +130,21 @@ if "%innermodel%"=="I25C" (
    pause
 )
 if "%innermodel%"=="ND03" (
-   echo %WARN%Çë½«Éè±¸¸üĞÂµ½3.0.2£¬Ëæºó½øÈë9008ÖØĞÂ³¢ÊÔ
-   pause
+   echo.%info%¼ì²âµ½ĞÍºÅÎªND03,¼´½«ÎªÄã¿ªÊ¼root
+   adb reboot edl
+   call nd03root
    exit /b
 )
-for /f "delims=" %%i in ('adb wait-for-device shell getprop ro.product.model') do set model=%%i
+for /f "delims=" %%i in ('adb shell getprop ro.product.model') do set model=%%i
 echo %INFO%ÊÖ±íĞÍºÅ:%model%
-for /f "delims=" %%i in ('adb wait-for-device shell getprop ro.build.version.release') do set androidversion=%%i
+for /f "delims=" %%i in ('adb shell getprop ro.build.version.release') do set androidversion=%%i
 echo %INFO%°²×¿°æ±¾:%androidversion%
-for /f "delims=" %%i in ('adb wait-for-device shell getprop ro.build.version.sdk') do set sdkversion=%%i
+for /f "delims=" %%i in ('adb shell getprop ro.build.version.sdk') do set sdkversion=%%i
 echo %INFO%SDK°æ±¾ºÅ:%sdkversion%
-for /f "delims=" %%i in ('adb wait-for-device shell getprop ro.product.current.softversion') do set version=%%i
+for /f "delims=" %%i in ('adb shell getprop ro.product.current.softversion') do set version=%%i
 echo %INFO%°æ±¾ºÅ:%version%
 call isv3
+del /Q /F .\isv3.txt >nul 2>nul
 set /p="%isv3%" <nul > isv3.txt
 del /Q /F tmp.txt >nul 2>nul
 del /Q /F .\*.img >nul 2>nul
@@ -144,6 +167,9 @@ if %errorlevel% neq 0 (
 copy /Y "%cd%\EDL\%innermodel%.zip" "%cd%\EDL\rooting\root.zip"
 if %errorlevel% neq 0 (
    ECHO %WARN%ÕÒ²»µ½ÎÄ¼ş£¬¿ÉÄÜÊÇ²»Ö§³ÖµÄĞÍºÅ
+   ECHO %INFO%°´ÈÎÒâ¼üÍË³ö
+   pause >nul
+   exit /b
 )
 ECHO %INFO%¿ªÊ¼½âÑ¹ÎÄ¼ş
 7z x EDL\rooting\root.zip -o.\EDL\rooting -aoa >nul 2>&1
@@ -154,606 +180,40 @@ if %errorlevel% neq 0 (
    exit /b
 )
 if "%sdkversion%"=="19" (
-goto ROOT-SDK19
+call ROOT-SDK19
+exit /b
 )
 if "%sdkversion%"=="25" (
-goto ROOT-SDK25
+call ROOT-SDK25
+exit /b
 )
 if "%sdkversion%"=="27" (
-goto ROOT-SDK27
+call ROOT-SDK27
+exit /b
 )
 if "%androidversion%"=="11" (
 ECHO %INFO%´¥·¢²Êµ°£º°²×¿11£¡
-ECHO.%ERROR%³ö´íÁË
-pause
-exit /b
 )
-
-:ROOT-SDK19
-set /p="ROOT-SDK19" <nul > roottmp.txt
-ECHO.%WARN%Çë×¢Òâ¼ì²éÇı¶¯
-ECHO.%INFO%ÕıÔÚÖØÆôµ½bootloaderÄ£Ê½£¬ÄãµÄÊÖ±í²¢Ã»ÓĞ±ä×©
-run_cmd "adb reboot bootloader"
-device_check.exe fastboot&&ECHO.
-ECHO.%INFO%ÕıÔÚË¢Èëboot
-fastboot flash boot EDL\rooting\sboot.img
-ECHO.%INFO%ÖØĞÂÆô¶¯£¬ÍË³öbootloaderÄ£Ê½
-fastboot reboot
-ECHO.%INFO%µÈ´ıÉè±¸Á¬½Ó
-device_check.exe adb&&ECHO.
-ECHO.%INFO%×øºÍ·Å¿í£¬ÈÃÎÒÃÇµÈ´ı120Ãë
-busybox sleep 120
-ECHO.%INFO%°²×°¹ÜÀíÆ÷
-call instapp .\EDL\rooting\manager.apk
-ECHO.%INFO%Æô¶¯¹ÜÀíÆ÷
-run_cmd "adb shell am start -n com.topjohnwu.magisk/.ui.MainActivity"
-ECHO.%INFO%ĞŞ¸´ÔËĞĞ»·¾³
-run_cmd "adb shell ""mkdir -p /sdcard/magisk"""
-adb push tmp\magiskfile /sdcard/magisk
-run_cmd "adb shell ""su -c rm -rf /data/adb/magisk"""
-run_cmd "adb shell ""su -c cp -af /sdcard/magisk/* /data/adb/magisk/"""
-run_cmd "adb shell ""su -c chmod -R 755 /data/adb/magisk/"""
-ECHO.%INFO%Ë¢ÈëxtcpatchÄ£¿é
-call instmodule2.bat tmp\xtcpatch.zip
-ECHO.%INFO%ÖØÆôÊÖ±í
-adb reboot
-ECHO.%INFO%ÄúµÄÊÖ±íROOTÍê±Ï
-ECHO.%INFO%É¾³ıÁÙÊ±ÎÄ¼ş
-del /Q /F .\EDL\rooting\*.*
-del /Q /F .\roottmp.txt
-ECHO.%INFO%5Ãëºó·µ»ØÖ÷Ò³%RESET%
-busybox sleep 5
-exit /b
-
-:ROOT-SDK25
-set /p="ROOT-SDK25" <nul > roottmp.txt
-echo %YELLOW%¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T%RESET%
-ECHO.%ORANGE% ÇëÑ¡ÔñÒ»ÖÖ·½°¸
-ECHO. 1.BOOT·½°¸[Èç¹ûÒÑ¾­½µ¼¶ÇëÑ¡Ôñ´Ë·½°¸]
-ECHO. 2.Recovery·½°¸[×îĞÂÏµÍ³¿ÉÊ¹ÓÃ´Ë·½°¸]
-echo %YELLOW%¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T¨T%RESET%
-set /p recorroot=%YELLOW%ÇëÊäÈëĞòºÅ²¢°´ÏÂ»Ø³µ¼ü£º%RESET%
-if "%recorroot%"=="1" goto ROOT-SDK25-1&&set /p="%recorroot%" <nul > recorroot.txt
-if "%recorroot%"=="2" goto ROOT-SDK25-2&&set /p="%recorroot%" <nul > recorroot.txt
-ECHO %ERROR%ÊäÈë´íÎó£¬ÇëÖØĞÂÊäÈë£¡%RESET%
-timeout /t 2 >nul
-goto ROOT-SDK25
-
-:ROOT-SDK25-1
-ECHO.%INFO%ÖØÆôÄúµÄÊÖ±íÖÁ9008
-adb reboot edl
-:ROOT-SDK25-1-1
-set /p="ROOT-SDK25-1-1" <nul > roottmp.txt
-call edlport
-ECHO.%INFO%·¢ËÍÒıµ¼
-call QSaharaServer.bat -p \\.\COM%chkdev__edl_port% -s 13:%cd%\EDL\msm8909w.mbn
-busybox sleep 2
-ECHO.%INFO%¶ÁÈ¡boot
-call fh_loader.bat --port=\\.\COM%chkdev__edl_port% --memoryname=EMMC --sendxml=%cd%\EDL\rooting\boot.xml --convertprogram2read --noprompt
-move /Y .\boot.img .\tmp\boot.img
-if %errorlevel% neq 0 (
-   echo %ERROR%ÒÆ¶¯boot.imgÎÄ¼şÊ§°Ü
-   ECHO %ERROR%ÕâÊÇÒ»¸öÖÂÃüÎÊÌâ£¬¿ÉÄÜÊı¾İÏßÁ¬½Ó²»ÎÈ¶¨£¬Ã»ÓĞ³É¹¦¶ÁÈ¡boot%RESET%
-   pause
-   exit /b
-)
-:ROOT-SDK25-1-2
-set /p="ROOT-SDK25-1-2" <nul > roottmp.txt
-ECHO.%INFO%¿ªÊ¼ĞŞ²¹boot
-call magiskpatch
-if %errorlevel% neq 0 (
-   echo %ERROR%ĞŞ²¹bootÊ§°Ü
-   ECHO %ERROR%ÎÒÖ»ÄÜÎªÄãÔÚ2ÃëºóÊÍ·Å´íÎóĞÅÏ¢£¬ËæºóÍË³ö¡£%RESET%
-   busybox sleep 2
-   type MagiskPatcherlog.txt
-   pause
-   exit /b
-)
-ECHO.%INFO%½â°üboot
-magiskboot unpack -h boot.img 1>nul 2>nul
-ECHO.%INFO%Ìæ»»adbd
-magiskboot.exe cpio ramdisk.cpio "add 0750 sbin/adbd 711_adbd"  1>nul 2>nul
-ECHO.%INFO%¿íÈİselinux
-patch_boot.exe | find "Suc" 1>nul 2>nul || ECHO %ERROR%patch_boot.exeÎŞ·¨ÔËĞĞ,Çë³¢ÊÔ°²×°VCÔËĞĞ¿âºÏ¼¯&&pause&&exit
-ECHO.%INFO%´ò°üboot
-magiskboot repack boot.img 1>nul 2>nul
-ECHO.%INFO%BOOT´¦ÀíÍê³É!!!
-copy /Y new-boot.img EDL\rooting\boot.img > nul
-del /Q /F .\tmp\boot.img
-:ROOT-SDK25-1-3
-set /p="ROOT-SDK25-1-3" <nul > roottmp.txt
-ECHO.%INFO%Ë¢ÈëBOOT
-call fh_loader.bat --port=\\.\COM%chkdev__edl_port% --memoryname=EMMC --search_path=EDL\rooting --sendxml=EDL\rooting\boot.xml --noprompt
-ECHO.%INFO%bootË¢ÈëÍê±Ï
-ECHO.%INFO%ÖØÆôÊÖ±í
-call qfh_loader.bat --port=\\.\COM%chkdev__edl__port% --memoryname=EMMC --search_path=EDL\ --sendxml=reboot.xml --noprompt
-ECHO.%INFO%×øºÍ·Å¿í£¬ÈÃÎÒÃÇµÈ´ıÄúµÄÊÖ±íÒ»¶ÎÊ±¼ä
-goto ROOT-SDK25-wait
-
-:ROOT-SDK25-2
-ECHO.%INFO%ÖØÆôÄúµÄÊÖ±íÖÁ9008
-adb reboot edl
-:ROOT-SDK25-2-1
-set /p="ROOT-SDK25-2-1" <nul > roottmp.txt
-call edlport
-ECHO.%INFO%·¢ËÍÒıµ¼
-call QSaharaServer.bat -p \\.\COM%chkdev__edl_port% -s 13:%cd%\EDL\msm8909w.mbn
-busybox sleep 2
-ECHO.%INFO%¶ÁÈ¡boot
-call fh_loader.bat --port=\\.\COM%chkdev__edl_port% --memoryname=EMMC --sendxml=%cd%\EDL\rooting\boot.xml --convertprogram2read --noprompt
-move /Y .\boot.img .\tmp\boot.img
-if %errorlevel% neq 0 (
-   echo %ERROR%ÒÆ¶¯boot.imgÎÄ¼şÊ§°Ü
-   ECHO %ERROR%ÕâÊÇÒ»¸öÖÂÃüÎÊÌâ£¬¿ÉÄÜÊı¾İÏßÁ¬½Ó²»ÎÈ¶¨£¬Ã»ÓĞ³É¹¦¶ÁÈ¡boot%RESET%
-   pause
-   exit /b
-)
-:ROOT-SDK25-2-2
-set /p="ROOT-SDK25-2-2" <nul > roottmp.txt
-ECHO.%INFO%¿ªÊ¼ĞŞ²¹boot
-call magiskpatch
-if %errorlevel% neq 0 (
-   echo %ERROR%ĞŞ²¹bootÊ§°Ü
-   ECHO %ERROR%ÎÒÖ»ÄÜÎªÄãÔÚ2ÃëºóÊÍ·Å´íÎóĞÅÏ¢£¬ËæºóÍË³ö¡£%RESET%
-   busybox sleep 2
-   type MagiskPatcherlog.txt
-   pause
-   exit /b
-)
-ECHO.%INFO%½â°üboot
-magiskboot unpack -h boot.img 1>nul 2>nul
-ECHO.%INFO%Ìæ»»adbd
-magiskboot.exe cpio ramdisk.cpio "add 0750 sbin/adbd 711_adbd"  1>nul 2>nul
-ECHO.%INFO%¿íÈİselinux
-patch_boot.exe | find "Suc" 1>nul 2>nul || ECHO %ERROR%patch_boot.exeÎŞ·¨ÔËĞĞ,Çë³¢ÊÔ°²×°VCÔËĞĞ¿âºÏ¼¯&&pause&&exit
-ECHO.%INFO%´ò°üboot
-magiskboot repack boot.img 1>nul 2>nul
-ECHO.%INFO%BOOT´¦ÀíÍê³É!!!
-copy /Y new-boot.img EDL\rooting\recovery.img > nul
-del /Q /F .\tmp\boot.img
-:ROOT-SDK25-2-3
-set /p="ROOT-SDK25-2-3" <nul > roottmp.txt
-ECHO.%INFO%Ë¢ÈëBOOTÖÁRecovery·ÖÇø
-call fh_loader.bat --port=\\.\COM%chkdev__edl_port% --memoryname=EMMC --search_path=EDL\rooting --sendxml=EDL\rooting\recovery.xml --noprompt
-ECHO.%INFO%Ë¢Èëmisc
-call fh_loader.bat --port=\\.\COM%chkdev__edl_port% --memoryname=EMMC --search_path=EDL\rooting --sendxml=EDL\rooting\misc.xml --noprompt
-ECHO.%INFO%ÖØÆôÊÖ±í
-call qfh_loader.bat --port=\\.\COM%chkdev__edl__port% --memoryname=EMMC --search_path=EDL\ --sendxml=reboot.xml --noprompt
-ECHO.%INFO%×øºÍ·Å¿í£¬ÈÃÎÒÃÇµÈ´ıÄúµÄÊÖ±íÒ»¶ÎÊ±¼ä
-
-:ROOT-SDK25-wait
-set /p="ROOT-SDK25-wait" <nul > roottmp.txt
-call boot_completed.bat
-ECHO.%INFO%°²×°¹ÜÀíÆ÷
-call instapp .\EDL\rooting\manager.apk
-ECHO.%INFO%Æô¶¯¹ÜÀíÆ÷[µÈ´ıÎåÃë]
-busybox sleep 5
-ECHO.
-run_cmd "adb shell am start com.topjohnwu.magisk/a.c"
-run_cmd "adb wait-for-device push EDL\rooting\xtcpatch /sdcard/"
-run_cmd "adb wait-for-device push EDL\rooting\magiskfile /sdcard/"
-ECHO.%INFO%¸´ÖÆÔËĞĞ»·¾³¼°Ë¢ÈëÄ£¿é
-run_cmd "adb push 2100.sh /sdcard/"
-run_cmd "adb shell ""su -c sh /sdcard/2100.sh"""
-call instmodule2.bat tmp\xtcpatch.zip
-:ROOT-SDK25-wait-1
-set /p="ROOT-SDK25-wait-1" <nul > roottmp.txt
-ECHO.%INFO%°²×°µÚÈı·½Ó¦ÓÃÉÌµê
-call instapp.bat .\apks\appstore.apk
-call instapp.bat .\apks\appstore2.apk
-ECHO.%INFO%°²×°µÚÈı·½°²×°Æ÷
-call instapp.bat .\apks\MoyeInstaller.apk
-ECHO.%INFO%ÌáÊ¾:Èç¹ûĞèÒªÔÚÊÖ±íÉÏ°²×°Ó¦ÓÃ£¬ÇëÔÚÊÖ±í¶ËÑ¡ÔñÏÒ-°²×°Æ÷£¬µã»÷Ê¼ÖÕ
-if exist .\recorroot.txt set /p recorroot=<recorroot.txt >nul
-if "%recorroot%"=="1" goto ROOT-SDK25-F
-ECHO.%INFO%ÖØÆôÄúµÄÊÖ±íÖÁ9008
-adb wait-for-device reboot edl
-:ROOT-SDK25-wait-2
-set /p="ROOT-SDK25-wait-2" <nul > roottmp.txt
-call edlport
-ECHO.%INFO%·¢ËÍÒıµ¼
-call QSaharaServer.bat -p \\.\COM%chkdev__edl_port% -s 13:%cd%\EDL\msm8909w.mbn
-ECHO.%INFO%Ë¢ÈëBOOTÖÁRecovery·ÖÇø
-call fh_loader.bat --port=\\.\COM%chkdev__edl_port% --memoryname=EMMC --search_path=EDL\rooting --sendxml=EDL\rooting\recovery.xml --noprompt
-ECHO.%INFO%Ë¢Èëmisc
-call fh_loader.bat --port=\\.\COM%chkdev__edl_port% --memoryname=EMMC --search_path=EDL\rooting --sendxml=EDL\rooting\misc.xml --noprompt
-ECHO.%INFO%ÖØÆôÊÖ±í
-call qfh_loader.bat --port=\\.\COM%chkdev__edl__port% --memoryname=EMMC --search_path=EDL\ --sendxml=reboot.xml --noprompt
-:ROOT-SDK25-F
-set /p="ROOT-SDK25-F" <nul > roottmp.txt
-device_check.exe adb qcom_edl&&ECHO.
-call boot_completed.bat
-ECHO.%INFO%ÖØÆôÊÖ±í
-adb reboot
-device_check.exe adb qcom_edl&&ECHO.
-call boot_completed.bat
-adb shell magisk -v | find "MAGISK" 1>nul 2>nul || ECHO %ERROR%ROOTÊ§°Ü£¡·¢Éú´íÎó£¬´íÎóroot-sdk25-F£¬Çë³¢ÊÔ»»·½°¸ÔÙ´Îroot&&ECHO.%INFO%°´ÈÎÒâ¼ü·µ»Ø&&pause&&exit /b
-ECHO.%INFO%ÄúµÄÊÖ±íÒÑROOTÍê±Ï
-del /Q /F .\roottmp.txt
-ECHO.%INFO%°´ÈÎÒâ¼ü·µ»Ø
+ECHO.%ERROR%³ö´íÁË£¬²»Ö§³ÖµÄ»úĞÍ
 pause
 exit /b
 
-:ROOT-SDK27
-set /p DCIMyn=%YELLOW%Òª±¸·İÏà²áÂğ£¿[y/n]:%RESET% 
-if "%DCIMyn%"=="y" call backup DCIM backup noask&&set /p="%backupname%" <nul > backupname.txt
-if "%DCIMyn%"=="yes" call backup DCIM backup noask&&set /p="%backupname%" <nul > backupname.txt
-ECHO.%INFO%ÖØÆôÄúµÄÊÖ±íÖÁ9008
-adb reboot edl
-call edlport
-
-:ROOT-SDK27-Patch
-set /p="ROOT-SDK27-Patch" <nul > roottmp.txt
-ECHO.%INFO%·¢ËÍÒıµ¼
-call QSaharaServer.bat -p \\.\COM%chkdev__edl_port% -s 13:%cd%\EDL\msm8937.mbn
-busybox sleep 2
-ECHO.%INFO%¶ÁÈ¡boot
-call fh_loader.bat --port=\\.\COM%chkdev__edl_port% --memoryname=EMMC --sendxml=%cd%\EDL\rooting\boot.xml --convertprogram2read --noprompt
-move /Y .\boot.img .\tmp\boot.img 1>nul 2>nul
-if %errorlevel% neq 0 (
-   echo %ERROR%ÒÆ¶¯boot.imgÎÄ¼şÊ§°Ü
-   ECHO %ERROR%ÕâÊÇÒ»¸öÖÂÃüÎÊÌâ£¬¿ÉÄÜÊı¾İÏßÁ¬½Ó²»ÎÈ¶¨£¬Ã»ÓĞ³É¹¦¶ÁÈ¡boot%RESET%
-   pause
-   exit /b
-)
-:ROOT-SDK27-Patch-1
-set /p="ROOT-SDK27-Patch-1" <nul > roottmp.txt
-busybox sleep 1
-ECHO.%INFO%¿ªÊ¼ĞŞ²¹boot
-if exist .\innermodel.txt set /p innermodel=<innermodel.txt >nul
-::MagiskPatcher.exe %cd%\magisk.apk %cd%\tmp\boot.img -out=%cd%\boot.img -cpu=arm_32 -fa=true >MagiskPatcherlog.txt
-
-MagiskPatcher.exe %cd%\magisk25.apk %cd%\tmp\boot.img -out=%cd%\boot.img -cpu=arm_32 -fa=true >MagiskPatcherlog.txt
-if %errorlevel% neq 0 (
-   echo %ERROR%ĞŞ²¹bootÊ§°Ü
-   ECHO %ERROR%ÎÒÖ»ÄÜÎªÄãÔÚ2ÃëºóÊÍ·Å´íÎóĞÅÏ¢£¬ËæºóÍË³ö¡£%RESET%
-   busybox sleep 2
-   type MagiskPatcherlog.txt
-   pause
-   exit /b
-)
-ECHO.%INFO%½â°üboot
-magiskboot unpack -h boot.img 1>nul 2>nul
-ECHO.%INFO%Ìæ»»adbd
-magiskboot.exe cpio ramdisk.cpio "add 0750 sbin/adbd 810_adbd"  1>nul 2>nul
-magiskboot.exe cpio ramdisk.cpio "add 0750 overlay.d/xse.rc xse.rc"  1>nul 2>nul
-ECHO.%INFO%¿íÈİselinux
-patch_boot.exe | find "Suc" 1>nul 2>nul || ECHO %ERROR%patch_boot.exeÎŞ·¨ÔËĞĞ,Çë³¢ÊÔ°²×°VCÔËĞĞ¿âºÏ¼¯&&pause&&exit
-ECHO.%INFO%´ò°üboot
-magiskboot repack boot.img 1>nul 2>nul
-ECHO.%INFO%BOOT´¦ÀíÍê³É!!!
-copy /Y new-boot.img EDL\rooting\sboot.img > nul
-del /Q /F .\tmp\boot.img
-:ROOT-SDK27-Patch-2
-set /p="ROOT-SDK27-Patch-2" <nul > roottmp.txt
-if exist .\smodel.txt set /p smodel=<smodel.txt >nul
-if "%smodel%"=="1" (
-ECHO.%INFO%Ë¢Èërecovery
-copy EDL\rooting\sboot.img EDL\rooting\recovery.img > nul
-call fh_loader.bat --port=\\.\COM%chkdev__edl_port% --memoryname=EMMC --search_path=EDL\rooting --sendxml=EDL\rooting\recovery.xml --noprompt
-ECHO.%INFO%Ë¢Èëboot£¬aboot£¬userdata£¬misc
-) else (
-ECHO.%INFO%Ë¢Èërecovery£¬aboot
-)
-call fh_loader.bat --port=\\.\COM%chkdev__edl_port% --memoryname=EMMC --search_path=EDL\rooting --sendxml=EDL\rooting\rawprogram0.xml --noprompt
-:ROOT-SDK27-Patch-3
-set /p="ROOT-SDK27-Patch-3" <nul > roottmp.txt
-if exist .\nouserdata.txt set /p nouserdata=<nouserdata.txt >nul
-if "%nouserdata%"=="1" (
-ECHO.%INFO%ÖØÆôÊÖ±í
-call qfh_loader.bat --port=\\.\COM%chkdev__edl__port% --memoryname=EMMC --search_path=EDL\ --sendxml=reboot.xml --noprompt
-ECHO.%INFO%ÄãÑ¡ÔñÁË²»Ë¢userdata£¬²»ÔÙ¼ÌĞø
-ECHO.°´ÈÎÒâ¼ü·µ»Ø...
-pause >nul
-exit /b
-)
-if exist .\smodel.txt set /p smodel=<smodel.txt >nul
-if "%smodel%"=="1" (
-ECHO.%INFO%ÖØÆôÊÖ±í
-call qfh_loader.bat --port=\\.\COM%chkdev__edl__port% --memoryname=EMMC --search_path=EDL\ --sendxml=reboot.xml --noprompt
-goto ROOT-SDK27-WAIT
-)
-ECHO.%INFO%²Á³ıboot
-copy /Y tmp\eboot.img tmp\boot.img > nul
-call fh_loader.bat --port=\\.\COM%chkdev__edl_port% --memoryname=EMMC --search_path=tmp --sendxml=EDL\rooting\boot.xml --noprompt
-ECHO.%INFO%ÖØÆôÊÖ±í
-call qfh_loader.bat --port=\\.\COM%chkdev__edl__port% --memoryname=EMMC --search_path=EDL\ --sendxml=reboot.xml --noprompt
-ECHO.%INFO%µÈ´ı¿ª»ú
-:ROOT-SDK27-Patch-4
-set /p="ROOT-SDK27-Patch-4" <nul > roottmp.txt
-device_check.exe fastboot&&ECHO.
-ECHO.%WARN%ÄãµÄÊÖ±íÃ»ÓĞ±ä×©!
-ECHO.%WARN%ÄãµÄÊÖ±íÃ»ÓĞ±ä×©!
-ECHO.%WARN%ÄãµÄÊÖ±íÃ»ÓĞ±ä×©!
-ECHO.%WARN%²»ÊÇ½øÈëfastboot¾ÍÊÇ±ä×©£¡
-ECHO.%INFO%Ë¢Èëboot
-run_cmd "fastboot flash boot new-boot.img"
-ECHO.%INFO%Ë¢Èëuserdata
-run_cmd "fastboot flash userdata tmp\userdata.img"
-echo ffbm-02 > misc.bin
-run_cmd "fastboot flash misc misc.bin"
-run_cmd "fastboot reboot"
-ECHO.%INFO%×øºÍ·Å¿í£¬ÈÃÎÒÃÇµÈ´ıÄúµÄÊÖ±íÒ»¶ÎÊ±¼ä
-device_check.exe adb fastboot&&ECHO.
-for /f "delims=" %%i in ('type tmp.txt') do set devicestatus=%%i
-if not "%devicestatus%"=="adb" (
-ECHO.%ERROR%ÄúµÄÉè±¸¿ÉÄÜ´¥·¢ÁËXseÏŞÖÆ£¡ÇëÖØĞÂ½øĞĞroot
-ECHO.%ERROR%°´ÈÎÒâ¼ü·µ»Ø...
-pause > nul
-exit /b
-)
-ECHO.%INFO%ÉÔµÈÆ¬¿Ì£¬¼´½«¿ªÊ¼
-call boot_completed.bat
-ECHO.%WARN%¹¤¾ßÎ´×ö³öÌáÊ¾²»ÒªÔÚÊÖ±íÉÏµãÈÎºÎÄÚÈİ£¡£¡
-ECHO.%WARN%Çë ²»Òª µã»÷ÖØÆô-ÖØÆô²¢½øÈëÕı³£Æô¶¯Ä£Ê½
-ECHO.%WARN%Çë ²»Òª µã»÷ÖØÆô-ÖØÆô²¢½øÈëÕı³£Æô¶¯Ä£Ê½
-
-:ROOT-SDK27-WAIT
-set /p="ROOT-SDK27-WAIT" <nul > roottmp.txt
-if exist .\smodel.txt set /p smodel=<smodel.txt >nul
-if "%smodel%"=="1" (
-ECHO.%INFO%×øºÍ·Å¿í£¬ÈÃÎÒÃÇµÈ´ıÄúµÄÊÖ±íÒ»¶ÎÊ±¼ä
-device_check.exe adb qcom_edl&&ECHO.
-ECHO.%INFO%ÉÔµÈÆ¬¿Ì£¬¼´½«¿ªÊ¼
-call boot_completed.bat
-busybox sleep 15
-call instapp .\apks\54850.apk
-)
-adb reboot
-device_check.exe adb qcom_edl fastboot&&ECHO.
-for /f "delims=" %%i in ('type tmp.txt') do set devicestatus=%%i
-if not "%devicestatus%"=="adb" (
-ECHO.%ERROR%ÄúµÄÉè±¸¿ÉÄÜ´¥·¢ÁËXseÏŞÖÆ£¡ÇëÖØĞÂ½øĞĞroot
-ECHO.%ERROR%°´ÈÎÒâ¼ü·µ»Ø...
-pause > nul
-exit /b
-)
-:ROOT-SDK27-WAIT-1
-set /p="ROOT-SDK27-WAIT-1" <nul > roottmp.txt
-call boot_completed.bat
-adb shell pm path com.android.systemui > nul 2> nul
-if %errorlevel%==0 (
-    set havesystemui=1
-    set /p="1" <nul > havesystemui.txt
-    ECHO %GREEN%ÏµÍ³´æÔÚSystemUI
-) else (
-    set havesystemui=0
-    set /p="0" <nul > havesystemui.txt
-    ECHO %GREEN%ÏµÍ³²»´æÔÚSystemUI
-)
-ECHO.%WARN%ÇëÒ»¶¨Òª¸ù¾İ¹¤¾ßµÄÌáÊ¾À´£¬rootÎ´Íê³ÉÇ°½ûÖ¹ÁªÍø£¬½ûÖ¹ÖØ¸´°ó¶¨£¡
-run_cmd "adb shell setprop persist.sys.charge.usable true"
-ECHO.%INFO%³äµç¿ÉÓÃÒÑ¿ªÆô
-run_cmd "adb shell dumpsys battery unplug"
-ECHO.%INFO%ÒÑÄ£ÄâÎ´³äµç×´Ì¬
-run_cmd "adb shell svc wifi disable"
-run_cmd "adb shell wm density 200"
-ECHO.%INFO%ÕıÔÚ×Ô¶¯´ò¿ª×Ô¶¯ÏìÓ¦£¬ÇëÉÔºó
-run_cmd "adb shell am start -n com.topjohnwu.magisk/.ui.MainActivity"
-busybox.exe sleep 10
-run_cmd "adb shell input keyevent 4"
-run_cmd "adb shell am start -n com.topjohnwu.magisk/.ui.MainActivity"
-device_check.exe adb&&ECHO.
-adb shell input tap 304 26
-adb shell input swipe 160 300 160 60 100
-adb shell input swipe 160 300 160 60 100
-adb shell input swipe 160 300 160 60 100
-adb shell input swipe 160 300 160 60 100
-adb shell input swipe 160 300 160 60 100
-adb shell input tap 200 100
-adb shell input tap 200 230
-adb shell input tap 200 300
-adb shell input tap 200 140
-adb shell "su -c magisk -v" || echo.%ERROR%×Ô¶¯ÊÚÓè³ö´í¼°ÊÖ¶¯ÊÚÓèÈ¨ÏŞ&&goto magisk
-goto Edxposed
-:magisk
-ECHO.%INFO%ÕıÔÚÆô¶¯Í¶ÆÁ£¡ÈçÊÖ±í¶Ë²»·½±ã²Ù×÷£¬¿ÉÔÚµçÄÔ¶Ë½øĞĞ²Ù×÷
-ECHO.%INFO%ÌáÊ¾£ºÈç¹ûÊÖ±íÏ¢ÆÁ£¬ÔÚÍ¶ÆÁ´°¿Úµ¥»÷ÓÒ¼ü¼´¿É
-start scrcpy-noconsole.vbs
-ECHO.%INFO%Çë´ò¿ªMagiskÓÒÉÏ½ÇÉèÖÃ£¬ÍùÏÂ»¬£¬ÕÒµ½×Ô¶¯ÏìÓ¦£¬ĞŞ¸ÄÎªÔÊĞí£¬È»ºóÕÒµ½³¬¼¶ÓÃ»§Í¨Öª£¬ĞŞ¸ÄÎªÎŞ
-ECHO.%INFO%È»ºóÔÚÖ÷Ò³µã»÷³¬¼¶ÓÃ»§£¬½«ËùÓĞ¿ª¹Ø´ò¿ª
-ECHO.%INFO%²Ù×÷Íê³ÉºóÇë°´ÈÎÒâ¼ü¼ÌĞø
-pause
-adb shell "su -c magisk -v" || echo.%ERROR%ÊÚÓè³ö´í£¬ÇëÖØĞÂÊÚÓè&&goto magisk
-:Edxposed
-ECHO.%INFO%ÕıÔÚ×Ô¶¯´ò¿ªEdxposed Installer£¬ÇëÉÔºó
-device_check.exe adb qcom_edl&&ECHO.
-run_cmd "adb shell am start -n com.solohsu.android.edxp.manager/de.robv.android.xposed.installer.WelcomeActivity"
-busybox sleep 7
-ECHO.%INFO%ÕıÔÚ×Ô¶¯¼¤»î£¬ÇëÉÔºó
-busybox.exe sleep 10
-run_cmd "adb shell input keyevent 4"
-run_cmd "adb shell ""su -c am start -n com.huanli233.systemplus/.ActiveSelfActivity"""
-device_check.exe adb&&ECHO.
-adb shell input swipe 160 300 160 60 100
-adb shell input swipe 160 300 160 60 100
-adb shell input swipe 160 300 160 60 100
-adb shell input swipe 160 300 160 60 100
-adb shell input swipe 160 300 160 60 100
-adb shell input swipe 160 300 160 60 100
-adb shell input tap 200 150
-adb shell input tap 200 200
-adb shell input swipe 160 60 160 300 100
-adb shell input swipe 160 60 160 300 100
-adb shell input tap 200 150
-adb shell input tap 200 200
-adb shell input swipe 160 300 160 60 100
-adb shell input swipe 160 300 160 60 100
-adb shell input tap 200 100
-adb shell input tap 200 150
-goto xposed-check
-:ROOT-Xposed
-ECHO.%INFO%ÕıÔÚÆô¶¯Í¶ÆÁ£¡ÈçÊÖ±í¶Ë²»·½±ã²Ù×÷£¬¿ÉÔÚµçÄÔ¶Ë½øĞĞ²Ù×÷
-ECHO.%INFO%ÌáÊ¾£ºÈç¹ûÊÖ±íÏ¢ÆÁ£¬ÔÚÍ¶ÆÁ´°¿Úµ¥»÷ÓÒ¼ü¼´¿É
-start scrcpy-noconsole.vbs
-run_cmd "adb shell ""su -c am start -n com.huanli233.systemplus/.ActiveSelfActivity"""
-ECHO.%INFO%ÇëÍùÏÂ»¬£¬ÕÒµ½×Ô¼¤»î£¬È»ºóµã»÷¼¤»îSystemPlusÓë¼¤»îºËĞÄÆÆ½â£¬È»ºó°´ÈÎÒâ¼ü¼ÌĞø
-pause
-:xposed-check
-run_cmd "adb push systemplus.sh /sdcard/systemplus.sh"
-ECHO.%INFO%¿ªÊ¼¼ì²éSystemPlus¼¤»î×´Ì¬...
-for /f "delims=" %%i in ('adb wait-for-device shell sh /sdcard/systemplus.sh') do set systemplus=%%i
-if "%systemplus%"=="1" (
-ECHO.%ERROR%Î´¼¤»î
-ECHO.%ERROR%Ã»ÓĞ¼¤»îSystemPlus£¡°´ÈÎÒâ¼üÖØ»ØÉÏÒ»²½
-pause
-goto ROOT-Xposed
-)
-ECHO.%INFO%ÒÑ¼¤»î
-run_cmd "adb push toolkit.sh /sdcard/toolkit.sh"
-ECHO.%INFO%¿ªÊ¼¼ì²éºËĞÄÆÆ½â¼¤»î×´Ì¬...
-for /f "delims=" %%i in ('adb wait-for-device shell sh /sdcard/toolkit.sh') do set toolkit=%%i
-if "%toolkit%"=="1" (
-ECHO.%ERROR%Î´¼¤»î
-ECHO.%ERROR%Ã»ÓĞ¼¤»îºËĞÄÆÆ½â£¡°´ÈÎÒâ¼üÖØ»ØÉÏÒ»²½
-pause
-goto ROOT-Xposed
-)
-ECHO.%INFO%ÒÑ¼¤»î
-adb wait-for-device shell "dumpsys package com.solohsu.android.edxp.manager | grep userId=" >useridtmp
-call number useridtmp chown
-
-ECHO.%INFO%ÕıÔÚĞŞ¸ÄÎÄ¼ş/data/user_de/0/com.solohsu.android.edxp.manager/conf/enabled_modules.listµÄËùÓĞÕß
-adb shell "su -c chown %chown% /data/user_de/0/com.solohsu.android.edxp.manager/conf/enabled_modules.list"
-
-ECHO.%INFO%ÕıÔÚĞŞ¸ÄÎÄ¼ş/data/user_de/0/com.solohsu.android.edxp.manager/conf/modules.listµÄËùÓĞÕß
-adb shell "su -c chown %chown% /data/user_de/0/com.solohsu.android.edxp.manager/conf/modules.list"
-ECHO.%INFO%ÉÔµÈÆ¬¿Ì£¬¼´½«¿ªÊ¼
-CLS
-:ROOT-SDK27-WAIT-2
-set /p="ROOT-SDK27-WAIT-2" <nul > roottmp.txt
-call logo
-ECHO.%ORANGE%--------------------------------------------------------------------
-ECHO.%PINK%-°ÑÊ±¼ä½»¸øÎÒÃÇ-
-ECHO.%INFO%¿ªÊ¼°²×°XTC PatchÄ£¿é
-adb shell setprop persist.sys.ez true
-adb push tmp\xtcpatch.zip /sdcard/xtcpatch.zip
-adb shell setprop persist.sys.rooting true
-adb shell "su -c magisk --install-module /sdcard/xtcpatch.zip"
-run_cmd "adb shell setprop persist.sys.rooting false"
-run_cmd "adb shell ""rm -rf /sdcard/xtcpatch.zip"""
-ECHO.%INFO%°²×°XTC PatchÄ£¿é³É¹¦
-run_cmd "adb shell wm density reset"
-run_cmd "adb shell pm clear com.android.packageinstaller"
-if exist .\havesystemui.txt set /p havesystemui=<havesystemui.txt >nul
-if "%havesystemui%"=="1" (
-  ECHO.%INFO%¿ªÊ¼°²×°XTC Patch_SystemUIÄ£¿é
-  adb push tmp\systemui.zip /sdcard/systemui.zip
-  adb shell "su -c magisk --install-module /sdcard/systemui.zip"
-  adb shell rm -rf /sdcard/systemui.zip
-  ECHO.%INFO%¿ªÊ¼°²×°XTC Patch_SystemUIÄ£¿é
-)
-ECHO.%INFO%ÖØÆôÊÖ±í
-run_cmd "adb reboot"
-:ROOT-SDK27-WAIT-3
-set /p="ROOT-SDK27-WAIT-3" <nul > roottmp.txt
-device_check.exe adb qcom_edl&&ECHO.
-ECHO.%INFO%×øºÍ·Å¿í£¬ÈÃÎÒÃÇµÈ´ıÄúµÄÊÖ±íÒ»¶ÎÊ±¼ä
-call boot_completed.bat
-if exist .\smodel.txt set /p smodel=<smodel.txt >nul
-if "%smodel%"=="1" (
-busybox sleep 5
-adb shell "su -c sh /data/adb/modules/XTCPatch/active_module.sh com.huanli233.systemplus"
-adb shell "su -c sh /data/adb/modules/XTCPatch/active_module.sh com.zcg.xtcpatch"
-adb reboot
-device_check.exe adb qcom_edl&&ECHO.
-call boot_completed.bat
-busybox sleep 5
-)
-busybox sleep 10
-ECHO.%INFO%ÉÔµÈÆ¬¿Ì...
-adb reboot
-call boot_completed.bat
-ECHO.%INFO%¿ªÊ¼°²×°ÏµÍ³Ó¦ÓÃ[ÇëÎğÌø¹ı]
-if exist .\havesystemui.txt set /p havesystemui=<havesystemui.txt >nul
-if exist .\isv3.txt set /p isv3=<isv3.txt >nul
-if "%isv3%"=="1" (
-    if "%havesystemui%"=="1" (
-        call instapp.bat .\apks\130510.apk
-    ) else (
-        call instapp.bat .\apks\121750.apk
-    )
-) else (
-    call instapp.bat .\apks\116100.apk
-)
-ECHO.%INFO%ÏµÍ³Ó¦ÓÃ°²×°Íê³É
-if exist .\havesystemui.txt set /p havesystemui=<havesystemui.txt >nul
-if exist .\smodel.txt set /p smodel=<smodel.txt >nul
-if "%smodel%"=="1" (
-ECHO.%INFO%ÖØÆôÊÖ±í
-run_cmd "adb reboot"
-) else (
-    if "%havesystemui%"=="1" run_cmd "adb shell pm enable com.android.systemui"
-    ECHO.%INFO%²Á³ımisc²¢ÖØÆô
-    run_cmd "adb reboot bootloader"
-    device_check.exe adb fastboot&&ECHO.
-    for /f "delims=" %%i in ('type tmp.txt') do set devicestatus=%%i
-    if "!devicestatus!"=="adb" run_cmd "adb reboot bootloader"
-    run_cmd "fastboot erase misc"
-    run_cmd "fastboot reboot"
-)
-:ROOT-SDK27-WAIT-4
-set /p="ROOT-SDK27-WAIT-4" <nul > roottmp.txt
-device_check.exe adb qcom_edl&&ECHO.
-call boot_completed.bat
-busybox sleep 5
-ECHO.%INFO%¿ªÊ¼°²×°ÖØÒªÔ¤×°Ó¦ÓÃ,¹²¼Æ6¸ö[ÇëÎğÌø¹ı]
-call instapp.bat .\apks\selftest.apk
-call instapp.bat .\apks\settings.apk
-call instapp.bat .\apks\wxzf.apk
-call instapp.bat .\apks\MoyeInstaller.apk
-call instapp.bat .\apks\appsettings.apk
-call instapp.bat .\apks\personalcenter.apk
-ECHO.%INFO%¿ªÊ¼°²×°Ô¤×°Ó¦ÓÃ,¹²¼Æ7¸ö
-busybox timeout 10 cmd /c set /p noapp=%YELLOW%ÈçĞèÌø¹ıÔÚ10ÃëÄÚÊäÈëno[²»ÍÆ¼ö]:%RESET%
-if "%noapp%"=="no" goto ROOT-SDK27-WAIT-5
-call instapp.bat .\apks\wcp2.apk
-call instapp.bat .\apks\appstore.apk
-call instapp.bat .\apks\appstore2.apk
-call instapp.bat .\apks\appstore3.apk
-call instapp.bat .\apks\appmanager.apk
-call instapp.bat .\apks\weichat.apk
-call instapp.bat .\apks\vibrator.apk
-ECHO.%INFO%Ô¤×°Ó¦ÓÃ°²×°Íê³É
-:ROOT-SDK27-WAIT-5
-set /p="ROOT-SDK27-WAIT-5" <nul > roottmp.txt
-ECHO.%INFO%Ê¹ÓÃÌáÊ¾:µ±ÊÖ±í½øÈë³¤Ğøº½Ä£Ê½¡¢Ë¯ÃßÄ£Ê½µÈ½ûÓÃÄ£Ê½Ê±£¬¿É×ó»¬µã»÷´ò¿ªÓ¦ÓÃÁĞ±í°´Å¥£¬¼´¿ÉÈÆ¹ı½ûÓÃÄ£Ê½
-ECHO.%INFO%Ê¹ÓÃÌáÊ¾:Äã¿ÉÒÔÔÚ/sdcard/hidden_app_list.txtÖĞÌîĞ´°üÃûÒÔÊµÏÖÒş²ØÓ¦ÓÃ
-ECHO.%INFO%ÕıÔÚÖ´ĞĞÌáÇ°±àÒë£¬¿ÉÄÜĞèÒªÒ»Ğ©Ê±¼ä
-run_cmd "adb shell cmd package compile -m everything-profile -f com.xtc.i3launcher"
-run_cmd "adb shell cmd package compile -m everything-profile -f com.xtc.setting"
-ECHO.%WARN%ÇëÓÀÔ¶²»ÒªĞ¶ÔØSystemPlusºÍXTCPatch£¬·ñÔòÊÖ±íÎŞ·¨¿ª»ú
-ECHO.%WARN%ÇëÓÀÔ¶²»ÒªĞ¶ÔØSystemPlusºÍXTCPatch£¬·ñÔòÊÖ±íÎŞ·¨¿ª»ú
-ECHO.%WARN%ÇëÓÀÔ¶²»ÒªĞ¶ÔØSystemPlusºÍXTCPatch£¬·ñÔòÊÖ±íÎŞ·¨¿ª»ú
-ECHO.%GRAY%-¿çÔ½É½º£ ÖÕ¼ûÊï¹â-
-ECHO.%INFO%ÌáÊ¾:Èç¹ûĞèÒªÔÚÊÖ±íÉÏ°²×°Ó¦ÓÃ£¬ÇëÔÚÊÖ±í¶ËÑ¡ÔñÏÒ-°²×°Æ÷£¬µã»÷Ê¼ÖÕ
-ECHO.%INFO%ÄúµÄÊÖ±íÒÑROOTÍê±Ï
-set /p backupname=<backupnametxt
-set /p DCIMyn=%YELLOW%Òª»Ö¸´Ïà²áÂğ£¿[y/n]:%RESET% 
-if "%DCIMyn%"=="y" call backup DCIM recover noask
-if "%DCIMyn%"=="yes" call backup DCIM recover noask
-ECHO.%YELLOW%ÊÇ·ñ½øĞĞÔ¤×°ÓÅ»¯[°üÀ¨Ä£¿éºÍÓ¦ÓÃ£¬ÆÚ¼äĞèÒª¶à´ÎÑ¡Ôñ]£¿
-set /p rootpro=%YELLOW%ÊäÈëy½øĞĞÓÅ»¯£¬°´ÈÎÒâ¼üÖ±½ÓÍË³ö%RESET% 
-if /i "%rootpro%"=="y" call rootpro
-del /Q /F .\roottmp.txt
-exit /b
-
-:rootspcd
-echo.%WARN%¡°¶ÏµãĞøË¢¡±ÊÇÒ»¸ö²âÊÔĞÔ¹¦ÄÜ
-echo.%WARN%¿ÉÄÜ»á³öÏÖÎ´ÖªÎÊÌâ£¬Èç¹û³öÏÖÎÊÌâ£¬Çë³¬¼¶»Ö¸´
-echo.%YELLOW%ÄãÉÏÒ»´ÎµÄÒ»¼üroot¿ÉÄÜÃ»ÓĞÍê³É£¬ĞèÒª´Ó¶Ï¿ªÎ»ÖÃ¼ÌĞøÂğ?
-set /p rootyesno=%YELLOW%ÊäÈëyes¼ÌĞøÊäÈëno½«É¾³ıÎ´Íê³É¼ÇÂ¼£º%RESET%
-set /p roottmp=<roottmp.txt
-if "!rootyesno!"=="yes" goto rootspcd-yes
-if "!rootyesno!"=="no" del /Q /F .\roottmp.txt
-if "!rootyesno!"=="y" goto rootspcd-yes
-if "!rootyesno!"=="n" del /Q /F .\roottmp.txt
-goto roottmp
-:rootspcd-yes
-device_check.exe adb qcom_edl fastboot&&ECHO.
-for /f "delims=" %%i in ('type tmp.txt') do set devicestatus=%%i
-if "%devicestatus%"=="qcom_edl" (
-ECHO.%INFO%»ñÈ¡9008¶Ë¿Ú...
-call edlport
-)
-goto !roottmp!
+:: :rootspcd
+:: echo.%WARN%¡°¶ÏµãĞøË¢¡±ÊÇÒ»¸ö²âÊÔĞÔ¹¦ÄÜ
+:: echo.%WARN%¿ÉÄÜ»á³öÏÖÎ´ÖªÎÊÌâ£¬Èç¹û³öÏÖÎÊÌâ£¬Çë³¬¼¶»Ö¸´
+:: echo.%YELLOW%ÄãÉÏÒ»´ÎµÄÒ»¼üroot¿ÉÄÜÃ»ÓĞÍê³É£¬ĞèÒª´Ó¶Ï¿ªÎ»ÖÃ¼ÌĞøÂğ?
+:: set /p rootyesno=%YELLOW%ÊäÈëyes¼ÌĞøÊäÈëno½«É¾³ıÎ´Íê³É¼ÇÂ¼£º%RESET%
+:: set /p roottmp=<roottmp.txt
+:: if "!rootyesno!"=="yes" goto rootspcd-yes
+:: if "!rootyesno!"=="no" del /Q /F .\roottmp.txt
+:: if "!rootyesno!"=="y" goto rootspcd-yes
+:: if "!rootyesno!"=="n" del /Q /F .\roottmp.txt
+:: goto roottmp
+:: :rootspcd-yes
+:: device_check.exe adb qcom_edl fastboot&&ECHO.
+:: for /f "delims=" %%i in ('type tmp.txt') do set devicestatus=%%i
+:: if "%devicestatus%"=="qcom_edl" (
+:: ECHO.%INFO%»ñÈ¡9008¶Ë¿Ú...
+:: call edlport
+:: )
+:: goto !roottmp!
